@@ -14,6 +14,9 @@ importers:
       '@vitejs/plugin-vue':
         specifier: ^6.0.1
         version: 6.0.1(vite@6.3.6(jiti@1.21.7)(yaml@2.8.1))(vue@3.5.21)
+      lucide-vue-next:
+        specifier: ^0.543.0
+        version: 0.543.0(vue@3.5.21)
       vue:
         specifier: ^3.5.21
         version: 3.5.21
@@ -30,6 +33,9 @@ importers:
       concurrently:
         specifier: ^9.0.1
         version: 9.2.1
+      daisyui:
+        specifier: ^5.1.9
+        version: 5.1.9
       laravel-vite-plugin:
         specifier: ^1.2.0
         version: 1.3.0(vite@6.3.6(jiti@1.21.7)(yaml@2.8.1))
@@ -538,6 +544,9 @@ packages:
   csstype@3.1.3:
     resolution: {integrity: sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==}
 
+  daisyui@5.1.9:
+    resolution: {integrity: sha512-ucptlYpiVMiY33VCehYoO1jI3cVjo4TbTKTr+zNG7sV+FO9UFUKiT54mynoUjIwWi2FXxrm0vDPj+2PmXGkXgA==}
+
   delayed-stream@1.0.0:
     resolution: {integrity: sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==}
     engines: {node: '>=0.4.0'}
@@ -741,6 +750,11 @@ packages:
 
   lru-cache@10.4.3:
     resolution: {integrity: sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ==}
+
+  lucide-vue-next@0.543.0:
+    resolution: {integrity: sha512-Az5kpNm/koKAwSNIKjsZ4uHV2tVfmlQlcHwFBygQ8gc5/jFg7An9OrxgDy/aE5m+HLx7VfLYqDxLr8gWecZbQA==}
+    peerDependencies:
+      vue: '>=3.0.1'
 
   magic-string@0.30.19:
     resolution: {integrity: sha512-2N21sPY9Ws53PZvsEpVtNuSW+ScYbQdp4b9qUaL+9QkHUrGFKo56Lg9Emg5s9V/qrtNBmiR01sYhUOwu3H+VOw==}
@@ -1527,6 +1541,8 @@ snapshots:
 
   csstype@3.1.3: {}
 
+  daisyui@5.1.9: {}
+
   delayed-stream@1.0.0: {}
 
   didyoumean@1.2.2: {}
@@ -1731,6 +1747,10 @@ snapshots:
   lodash-es@4.17.21: {}
 
   lru-cache@10.4.3: {}
+
+  lucide-vue-next@0.543.0(vue@3.5.21):
+    dependencies:
+      vue: 3.5.21
 
   magic-string@0.30.19:
     dependencies:

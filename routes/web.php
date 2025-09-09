@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\CircuitController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\DayCircuitController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -23,6 +25,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+//circuit
+Route::middleware('auth')->group(function () {
+    Route::resource('circuits', CircuitController::class);
+});
+
+Route::middleware('auth')->group(function () {
+    Route::resource('days', DayCircuitController::class);
 });
 
 Route::get('/contact', [ContactController::class, 'index']);
