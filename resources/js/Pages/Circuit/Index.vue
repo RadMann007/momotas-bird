@@ -1,9 +1,10 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head, Link, router } from '@inertiajs/vue3'
+import { PlusCircle } from 'lucide-vue-next'
 
 defineProps({
-  circuits: Array, // on reçoit un tableau simple
+  circuits: Array
 })
 
 const destroy = (id) => {
@@ -21,7 +22,7 @@ const destroy = (id) => {
       <div class="flex justify-between items-center">
         <h2 class="text-2xl font-bold text-gray-800">Liste des circuits</h2>
         <Link :href="route('circuits.create')" class="btn btn-primary">
-          + Nouveau circuit
+          <PlusCircle /> Nouveau circuit
         </Link>
       </div>
     </template>
@@ -61,7 +62,7 @@ const destroy = (id) => {
 
               <div class="card-actions justify-end mt-4">
                 <Link
-                  :href="route('circuits.create', circuit.id)"
+                  :href="route('circuits.show', circuit.id)"
                   class="btn btn-sm btn-outline"
                 >
                   Voir

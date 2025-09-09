@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Circuit;
+use App\Models\DayCircuit;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class DayCircuitController extends Controller
 {
@@ -11,7 +14,7 @@ class DayCircuitController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('Day/Index');
     }
 
     /**
@@ -19,7 +22,9 @@ class DayCircuitController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Day/Create', [
+            'circuits' => Circuit::all()
+        ]);
     }
 
     /**
@@ -27,8 +32,18 @@ class DayCircuitController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // dd($request);
+        $data = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'circuit_id' => 'required'
+        ]);
+
+        DayCircuit::create($data);
+
+        return redirect()->route('circuits.index')->with('success', 'Day ajouté');
     }
+
 
     /**
      * Display the specified resource.
@@ -43,7 +58,7 @@ class DayCircuitController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return Inertia::render('Day/Edit');
     }
 
     /**

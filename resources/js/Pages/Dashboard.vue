@@ -32,7 +32,7 @@ import { Map, Calendar, Image as ImageIcon } from 'lucide-vue-next'; // Icônes 
 
                     <!-- Days -->
                     <Link
-                        :href="route('circuits.index')"
+                        :href="route('days.index')"
                         class="group card bg-base-100 shadow-xl hover:shadow-2xl transition duration-300 border border-gray-100"
                     >
                         <div class="card-body items-center text-center">

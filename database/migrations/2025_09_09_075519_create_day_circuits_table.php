@@ -14,10 +14,9 @@ return new class extends Migration
     {
         Schema::create('day_circuits', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Circuit::class)->constrained()->onDelete('cascade');
-            $table->integer('day_number'); //D1, D2, ...
             $table->string('title');
             $table->longText('description');
+            $table->foreignIdFor(Circuit::class)->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -10,7 +10,7 @@ const showingNavigationDropdown = ref(false);
 </script>
 
 <template>
-    <div>
+    <div data-theme="valentine">
         <div class="min-h-screen bg-gray-100">
             <nav
                 class="border-b border-gray-100 bg-white"
