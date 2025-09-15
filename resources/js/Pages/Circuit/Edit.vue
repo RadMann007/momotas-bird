@@ -1,35 +1,41 @@
-<script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Head, useForm, Link } from '@inertiajs/vue3'
+<script setup lang="ts">
+import { CircuitInterface } from '@/interfaces/custom';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import { Head, useForm } from '@inertiajs/vue3';
+
+const props = defineProps<{
+    circuit: CircuitInterface
+}>();
 
 const form = useForm({
-  title: '',
-  duration: '',
-  description: '',
-  image: null,
-  start: '',
-  end: '',
-  distance: 0,
-  truck_disponibility: false,
-  price_3_pers: 0,
-  price_6_pers: 0,
-  price_max_pers: 0,
+  _method: 'put',
+  title: props.circuit.title,
+  duration: props.circuit.duration,
+  description: props.circuit.description,
+  image: null as File | null,
+  start: props.circuit.start,
+  end: props.circuit.end,
+  distance: props.circuit.distance,
+  truck_disponibility: props.circuit.truck_disponibility,
+  price_3_pers: props.circuit.price_3_pers,
+  price_6_pers: props.circuit.price_6_pers,
+  price_max_pers: props.circuit.price_max_pers
 })
 
 const submit = () => {
-  form.post(route('circuits.store'))
+    form.post(route('circuits.update', props.circuit.id));
 }
+
 </script>
 
 <template>
-  <Head title="Créer un circuit" />
+    <Head title="Circuit"/>
+    <AuthenticatedLayout>
+        <template #header>
+            <h2 class="text-2xl font-bold text-gray-800">Modifier un circuit</h2>
+        </template>
 
-  <AuthenticatedLayout>
-    <template #header>
-      <h2 class="text-2xl font-bold text-gray-800">Créer un circuit</h2>
-    </template>
-
-    <div class="py-12">
+        <div class="py-12">
       <div class="mx-auto max-w-3xl sm:px-6 lg:px-8">
         <div class="bg-white shadow rounded-lg p-6">
           <form @submit.prevent="submit" enctype="multipart/form-data" class="space-y-6">
@@ -62,8 +68,7 @@ const submit = () => {
               </div>
             </div>
 
-            <!-- Depart -->
-             <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-2 gap-4">
 
                 <div>
                 <label class="block text-sm font-medium text-gray-700">Start</label>
@@ -93,7 +98,7 @@ const submit = () => {
                 </div>
              </div>
 
-             <!-- Price 3 pers -->
+              <!-- Price 3 pers -->
               <div class="grid grid-cols-3 gap-4">
                 <div>
                   <label class="block text-sm font-medium text-gray-700">Price for 3</label>
@@ -134,7 +139,7 @@ const submit = () => {
                   </div>
                 </div>
               </div>
-              
+
             <!-- Description -->
             <div>
               <label class="block text-sm font-medium text-gray-700">Description</label>
@@ -183,5 +188,6 @@ const submit = () => {
         </div>
       </div>
     </div>
-  </AuthenticatedLayout>
+        
+    </AuthenticatedLayout>
 </template>

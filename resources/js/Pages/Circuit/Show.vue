@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { CircuitWithDay } from '@/interfaces/custom';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { router } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import { Head, useForm } from '@inertiajs/vue3';
 import { ref, computed } from 'vue';
 
@@ -9,7 +9,7 @@ const props = defineProps<{
   circuit: CircuitWithDay
 }>();
 
-/* --- Form pour ajouter un Day --- */
+/* --- Form pour ajouter une Etape --- */
 const form = useForm({
   title: '',
   description: '',
@@ -28,8 +28,9 @@ function submit() {
 /* --- Suppression --- */
 // const delForm = router
 function deleteDay(id: number) {
-  if (!confirm('Confirmer la suppression de ce Day ?')) return;
-  router.delete(route('days.destroy', id));
+  if (confirm('Confirmer la suppression de cette étape ?')){
+    router.delete(route('days.destroy', id));
+  }
 }
 
 /* --- Table + recherche + pagination client-side --- */
@@ -67,50 +68,54 @@ function formatDate(dt: string | null) {
 
 /* --- Modal --- */
 const modalOpen = ref(false);
+
 </script>
 
 <template>
   <Head :title="`Circuit - ${props.circuit.title}`" />
   <AuthenticatedLayout>
     <div class="max-w-6xl mx-auto p-6 space-y-6">
-      <!-- Card Circuit -->
-      <!-- <div class="card bg-base-100 shadow">
-        <figure v-if="props.circuit.image">
-          <img :src="`/storage/${props.circuit.image}`" alt="Image Circuit" class="w-full h-64 object-cover" />
-        </figure>
-        <div class="card-body">
-          <h2 class="card-title text-2xl">{{ props.circuit.title }}</h2>
-          <p class="text-gray-600"><strong>Durée :</strong> {{ props.circuit.duration }}</p>
-          <p class="mt-2">{{ props.circuit.description }}</p>
+      <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col md:flex-row">
+        <div class="w-1/3 h-36">
+          <img 
+              v-if="props.circuit.image"
+              :src="`/storage/${props.circuit.image}`" 
+              alt="Image Circuit" 
+              class="object-cover"
+            />
         </div>
-      </div> -->
-      <div class="card card-compact w-full bg-base-100 shadow-xl flex flex-row items-center p-4 space-x-4">
-  <!-- Avatar image -->
-  <div class="avatar">
-    <div class="w-32 rounded-xl ring ring-primary ring-offset-base-100 ring-offset-2 overflow-hidden">
-      <img 
-        v-if="props.circuit.image"
-        :src="`/storage/${props.circuit.image}`" 
-        alt="Image Circuit" 
-        class="object-cover w-full h-full"
-      />
-    </div>
-  </div>
 
-      <!-- Contenu de la card -->
-      <div class="flex-1 space-y-2">
-        <h2 class="card-title text-2xl">{{ props.circuit.title }}</h2>
-        <p class="text-gray-500 font-semibold">Durée : {{ props.circuit.duration }}</p>
-        <p class="text-gray-700">{{ props.circuit.description }}</p>
+        <div class="p-4 flex-1 flex flex-col justify-between">
+          <div>
+            <h2 class="text-2xl font-bold mb-1">{{ props.circuit.title }}</h2>
+            <p class="text-gray-600 text-sm mb-2">
+              <span class="font-semibold">Durée :</span> {{ props.circuit.duration }} jours
+            </p>
+            <p class="text-gray-600 text-sm mb-2">
+              <span class="font-semibold">De:</span> {{ props.circuit.start }} <span class="font-semibold">à:</span> {{ props.circuit.end }}
+            </p>
+            <p class="text-gray-700 text-sm mb-3">{{ props.circuit.description }}</p>
+          </div>
 
-        <!-- <div class="card-actions pt-2">
-          <button class="btn btn-primary">Réserver</button>
-          <button class="btn btn-outline">Partager</button>
-        </div> -->
+          <div class="bg-gray-50 p-3 rounded-lg">
+            <h3 class="text-lg font-semibold mb-2 text-gray-800">Tarifs</h3>
+            <div class="flex justify-around text-center">
+              <div class="px-2">
+                <p class="text-xs text-gray-600">3 personnes</p>
+                <p class="text-lg font-bold text-primary">{{ props.circuit.price_3_pers }} €</p>
+              </div>
+              <div class="px-2">
+                <p class="text-xs text-gray-600">6 personnes</p>
+                <p class="text-lg font-bold text-primary">{{ props.circuit.price_6_pers }} €</p>
+              </div>
+              <div class="px-2">
+                <p class="text-xs text-gray-600">Max personnes</p>
+                <p class="text-lg font-bold text-primary">{{ props.circuit.price_max_pers }} €</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      </div>
-
-      
 
       <!-- Table controls -->
       <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -125,9 +130,9 @@ const modalOpen = ref(false);
         </div>
 
         <!-- bouton ouvrir modale -->
-        <button class="btn btn-primary" @click="modalOpen = true">
-          + Ajouter un Day
-        </button>
+        <!-- <button class="btn btn-primary" @click="modalOpen = true">
+          + Ajouter Etape
+        </button> -->
       </div>
 
       <!-- Table des Days -->
@@ -144,7 +149,7 @@ const modalOpen = ref(false);
           </thead>
           <tbody>
             <tr v-if="paginated.length === 0">
-              <td colspan="5" class="text-center py-6 text-gray-500">Aucun Day pour ce circuit.</td>
+              <td colspan="5" class="text-center py-6 text-gray-500">Aucun Etape pour ce circuit.</td>
             </tr>
 
             <tr v-for="(day, idx) in paginated" :key="day.id">
@@ -155,10 +160,10 @@ const modalOpen = ref(false);
               </td>
               <td>{{ formatDate(day.created_at) }}</td>
               <td class="text-center">
-                <button class="btn btn-ghost btn-sm" @click="$inertia.visit(route('days.edit', day.id))">
-                  Éditer
-                </button>
-                <button class="btn btn-error btn-sm ml-2" @click="deleteDay(day.id)">
+                <Link class="btn btn-ghost btn-sm" :href="route('days.edit', day.id)">
+                  Modifier
+                </Link>
+                <button class="btn btn-error btn-sm ml-2 text-white" @click="deleteDay(day.id)">
                   Supprimer
                 </button>
               </td>
@@ -186,7 +191,7 @@ const modalOpen = ref(false);
         <h3 class="font-bold text-lg mb-4">Ajouter un Day</h3>
         <form @submit.prevent="submit" class="space-y-3">
           <input type="text" v-model="form.title" placeholder="Titre du Day" class="input input-bordered w-full" required />
-          <textarea v-model="form.description" placeholder="Description" class="textarea textarea-bordered w-full"></textarea>
+          <textarea v-model="form.description" placeholder="Description" class="textarea textarea-bordered w-full" rows="5"></textarea>
           <div class="modal-action">
             <button type="button" class="btn" @click="modalOpen = false">Annuler</button>
             <button type="submit" class="btn btn-primary" :disabled="form.processing">Ajouter</button>

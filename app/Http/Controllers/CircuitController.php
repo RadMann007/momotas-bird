@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Circuit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class CircuitController extends Controller
@@ -36,6 +37,13 @@ class CircuitController extends Controller
             'duration' => 'required|string|max:255',
             'description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'start' => 'required',
+            'end' => 'required',
+            'distance' => 'required', 
+            'truck_disponibility' =>'required',
+            'price_3_pers' => 'required',
+            'price_6_pers'=> 'required',
+            'price_max_pers' => 'required'
         ]);
 
         if ($request->hasFile('image')) {
@@ -62,22 +70,58 @@ class CircuitController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $circuit = Circuit::findOrFail($id);
+        return Inertia::render('Circuit/Edit', [
+            'circuit' => $circuit
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Circuit $circuit)
     {
-        //
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'duration' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'start' => 'required',
+            'end' => 'required',
+            'distance' => 'required', 
+            'truck_disponibility' =>'required',
+            'price_3_pers' => 'required',
+            'price_6_pers'=> 'required',
+            'price_max_pers' => 'required'
+        ]);
+
+        $data = $request->except('image');
+
+        // dd($data);
+        if ($request->hasFile('image')) {
+
+            //delete old image if exist
+            if($circuit->image && Storage::disk('public')->exists($circuit->image)){
+                Storage::disk('public')->delete($circuit->image);
+            }
+
+            $data['image'] = $request->file('image')->store('circuits', 'public');
+        }
+
+        if($request->hasFile('image') == false){
+            $data['image'] = $circuit->image;
+        }
+
+        $circuit->update($data);
+        return redirect()->route('circuits.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Circuit $circuit)
     {
-        //
+        $circuit->delete();
+        return redirect()->route('circuits.index');
     }
 }

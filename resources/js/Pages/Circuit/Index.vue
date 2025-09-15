@@ -2,6 +2,8 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head, Link, router } from '@inertiajs/vue3'
 import { PlusCircle } from 'lucide-vue-next'
+import { ref } from 'vue';
+
 
 defineProps({
   circuits: Array
@@ -12,6 +14,14 @@ const destroy = (id) => {
     router.delete(route('circuits.destroy', id))
   }
 }
+
+const imagePreview = ({img}) => {
+  imgPath.value = img;
+  modalOpen.value = true;
+}
+
+const modalOpen = ref(false);
+const imgPath = ref('');
 </script>
 
 <template>
@@ -40,7 +50,7 @@ const destroy = (id) => {
             class="card bg-white shadow-md hover:shadow-xl transition duration-300 border border-gray-100"
           >
             <figure>
-              <img
+              <img @click="imagePreview({img: '/storage/'+circuit.image})"
                 v-if="circuit.image"
                 :src="`/storage/${circuit.image}`"
                 alt="Circuit image"
@@ -68,7 +78,7 @@ const destroy = (id) => {
                   Voir
                 </Link>
                 <Link
-                  :href="route('circuits.create', circuit.id)"
+                  :href="route('circuits.edit', circuit.id)"
                   class="btn btn-sm btn-secondary"
                 >
                   Éditer
@@ -90,5 +100,12 @@ const destroy = (id) => {
         </div>
       </div>
     </div>
+
+    <dialog v-if="modalOpen" class="w-screen modal modal-open">
+      <button type="button" class="btn" @click="modalOpen = false">X</button>
+      <div class="modal-box max-w-5xl">
+        <img :src="imgPath" class="w-full" />
+      </div>
+    </dialog>
   </AuthenticatedLayout>
 </template>

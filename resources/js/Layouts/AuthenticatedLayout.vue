@@ -41,7 +41,7 @@ const showingNavigationDropdown = ref(false);
                             </div>
                         </div>
 
-                        <div class="hidden sm:ms-6 sm:flex sm:items-center">
+                        <div v-if="$page.props.auth.user" class="hidden sm:ms-6 sm:flex sm:items-center">
                             <!-- Settings Dropdown -->
                             <div class="relative ms-3">
                                 <Dropdown align="right" width="48">
@@ -148,9 +148,7 @@ const showingNavigationDropdown = ref(false);
                     </div>
 
                     <!-- Responsive Settings Options -->
-                    <div
-                        class="border-t border-gray-200 pb-1 pt-4"
-                    >
+                    <div v-if="$page.props.auth.user" class="border-t border-gray-200 pb-1 pt-4">
                         <div class="px-4">
                             <div
                                 class="text-base font-medium text-gray-800"

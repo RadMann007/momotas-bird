@@ -5,16 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\Circuit;
 use App\Models\DayCircuit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
-class DayCircuitController extends Controller
+class DayCircuitController extends Controller //Step
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return Inertia::render('Day/Index');
+        return Inertia::render('Day/Index', [
+            'etapes' => DayCircuit::with(['circuit'])->get(),
+            'circuits' => Circuit::all()
+        ]);
     }
 
     /**
@@ -32,16 +36,25 @@ class DayCircuitController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
         $data = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'circuit_id' => 'required'
+            'circuit_id' => 'required',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'distance' => 'required',
+            'start' => 'required',
+            'end' => 'required',
+            'hotel_name' => 'required',
+            'hotel_description' => 'required',
         ]);
+
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('steps', 'public');
+        }
 
         DayCircuit::create($data);
 
-        return redirect()->route('circuits.index')->with('success', 'Day ajouté');
+        return redirect()->route('days.index', $request->circuit_id)->with('success', 'Step added with success!');
     }
 
 
@@ -56,17 +69,52 @@ class DayCircuitController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(String $id)
     {
-        return Inertia::render('Day/Edit');
+        $etape = DayCircuit::find($id);
+        return Inertia::render('Day/Edit', [
+            'etape' => $etape,
+            'circuits' => Circuit::all()
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, DayCircuit $day)
     {
-        //
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'circuit_id' => 'required',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'distance' => 'required',
+            'start' => 'required',
+            'end' => 'required',
+            'hotel_name' => 'required',
+            'hotel_description' => 'required',
+        ]);
+
+        $data = $request->except('image');
+
+        // dd($data);
+        if ($request->hasFile('image')) {
+
+            //delete old image if exist
+            if($day->image && Storage::disk('public')->exists($day->image)){
+                Storage::disk('public')->delete($day->image);
+            }
+
+            $data['image'] = $request->file('image')->store('steps', 'public');
+        }
+
+        if($request->hasFile('image') == false){
+            $data['image'] = $day->image;
+        }
+
+        $day->update($data);
+        return redirect()->route('days.index')->with('success', 'Step updated!');
+
     }
 
     /**
@@ -74,6 +122,8 @@ class DayCircuitController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $etape = DayCircuit::find($id);
+        $etape->delete();
+        return redirect()->route('circuits.index')->with('success', 'Step deleted!');
     }
 }

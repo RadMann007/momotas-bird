@@ -3,7 +3,9 @@
 use App\Http\Controllers\CircuitController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DayCircuitController;
+use App\Http\Controllers\ItineraireController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Circuit;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -14,6 +16,7 @@ Route::get('/', function () {
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
+        'circuits' => Circuit::take(3)->get()
     ]);
 });
 
@@ -36,6 +39,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('days', DayCircuitController::class);
 });
 
-Route::get('/contact', [ContactController::class, 'index']);
+Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+Route::get('/itineraires', [ItineraireController::class, 'index'])->name('itineraires.index');
+Route::get('/itineraires/{id}', [ItineraireController::class, 'show'])->name('itineraires.show');
+
 
 require __DIR__.'/auth.php';

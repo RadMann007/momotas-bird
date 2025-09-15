@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails du Circuit - Explorez le Pérou</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .font-display {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .timeline-line {
+            background: linear-gradient(to bottom, #667eea, #764ba2);
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div id="app">
+        <!-- Navigation -->
+        <nav class="fixed top-0 w-full bg-white/90 backdrop-blur-md z-50 shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center">
+                        <span class="font-display text-2xl font-bold text-gradient">Voyageurs du Monde</span>
+                    </div>
+                    <div class="hidden md:flex space-x-8">
+                        <a href="#" class="text-gray-700 hover:text-purple-600 transition-colors">Accueil</a>
+                        <a href="#" class="text-gray-700 hover:text-purple-600 transition-colors">Circuits</a>
+                        <a href="#" class="text-gray-700 hover:text-purple-600 transition-colors">Destinations</a>
+                        <a href="#" class="text-gray-700 hover:text-purple-600 transition-colors">À propos</a>
+                        <a href="#" class="text-gray-700 hover:text-purple-600 transition-colors">Contact</a>
+                    </div>
+                    <button class="md:hidden" @click="mobileMenu = !mobileMenu">
+                        <i data-feather="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="relative h-screen flex items-center justify-center overflow-hidden">
+            <div class="absolute inset-0 z-0">
+                <img src="http://static.photos/travel/1920x1080/42" alt="Machu Picchu" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-r from-black/60 to-purple-900/40"></div>
+            </div>
+            
+            <div class="relative z-10 text-center text-white px-4 max-w-4xl mx-auto" data-aos="fade-up">
+                <h1 class="font-display text-5xl md:text-7xl font-bold mb-6 animate-float">
+                    Pérou Mystique
+                </h1>
+                <p class="text-xl md:text-2xl mb-8 opacity-90">
+                    Un voyage inoubliable de 12 jours à la découverte des trésors du Pérou
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button class="btn-primary px-8 py-4 rounded-full font-semibold text-lg">
+                        Réserver maintenant
+                    </button>
+                    <button class="border-2 border-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-purple-600 transition-all">
+                        Voir la vidéo
+                    </button>
+                </div>
+            </div>
+            
+            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+                <i data-feather="chevron-down" class="w-8 h-8 text-white"></i>
+            </div>
+        </section>
+
+        <!-- Circuit Details -->
+        <section class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid lg:grid-cols-3 gap-12">
+                    <!-- Left Column -->
+                    <div class="lg:col-span-2">
+                        <!-- Overview -->
+                        <div class="mb-12" data-aos="fade-up">
+                            <h2 class="font-display text-4xl font-bold text-gray-900 mb-6">Aperçu du Circuit</h2>
+                            <p class="text-lg text-gray-600 leading-relaxed mb-8">
+                                Partez à l'aventure dans un pays où l'histoire ancienne rencontre des paysages à couper le souffle. 
+                                Ce circuit de 12 jours vous emmènera des mystérieuses lignes de Nazca aux sommets enneigés des Andes, 
+                                en passant par la forêt amazonienne dense et la majestueuse citadelle de Machu Picchu.
+                            </p>
+                            
+                            <!-- Highlights -->
+                            <div class="grid md:grid-cols-2 gap-6 mb-12">
+                                <div class="card-hover bg-gradient-to-br from-purple-50 to-pink-50 p-6 rounded-2xl">
+                                    <div class="flex items-center mb-4">
+                                        <div class="gradient-bg p-3 rounded-full mr-4">
+                                            <i data-feather="clock" class="w-6 h-6 text-white"></i>
+                                        </div>
+                                        <h3 class="font-semibold text-lg text-gray-800">Durée</h3>
+                                    </div>
+                                    <p class="text-gray-600">12 jours / 11 nuits</p>
+                                </div>
+                                
+                                <div class="card-hover bg-gradient-to-br from-blue-50 to-cyan-50 p-6 rounded-2xl">
+                                    <div class="flex items-center mb-4">
+                                        <div class="gradient-bg p-3 rounded-full mr-4">
+                                            <i data-feather="users" class="w-6 h-6 text-white"></i>
+                                        </div>
+                                        <h3 class="font-semibold text-lg text-gray-800">Groupe</h3>
+                                    </div>
+                                    <p class="text-gray-600">8-16 participants</p>
+                                </div>
+                                
+                                <div class="card-hover bg-gradient-to-br from-green-50 to-emerald-50 p-6 rounded-2xl">
+                                    <div class="flex items-center mb-4">
+                                        <div class="gradient-bg p-3 rounded-full mr-4">
+                                            <i data-feather="map-pin" class="w-6 h-6 text-white"></i>
+                                        </div>
+                                        <h3 class="font-semibold text-lg text-gray-800">Destinations</h3>
+                                    </div>
+                                    <p class="text-gray-600">Lima, Nazca, Arequipa, Cusco, Machu Picchu</p>
+                                </div>
+                                
+                                <div class="card-hover bg-gradient-to-br from-orange-50 to-red-50 p-6 rounded-2xl">
+                                    <div class="flex items-center mb-4">
+                                        <div class="gradient-bg p-3 rounded-full mr-4">
+                                            <i data-feather="star" class="w-6 h-6 text-white"></i>
+                                        </div>
+                                        <h3 class="font-semibold text-lg text-gray-800">Difficulté</h3>
+                                    </div>
+                                    <p class="text-gray-600">Modérée (3/5)</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Itinerary -->
+                        <div class="mb-12" data-aos="fade-up">
+                            <h2 class="font-display text-4xl font-bold text-gray-900 mb-8">Itinéraire Détaillé</h2>
+                            
+                            <div class="relative">
+                                <div class="absolute left-8 top-0 bottom-0 w-1 timeline-line rounded-full"></div>
+                                
+                                <div class="space-y-8">
+                                    <div v-for="(day, index) in itinerary" :key="index" class="relative flex items-start">
+                                        <div class="absolute left-6 w-5 h-5 bg-white border-4 border-purple-600 rounded-full"></div>
+                                        <div class="ml-16 bg-white rounded-2xl shadow-lg p-6 card-hover">
+                                            <div class="flex items-center justify-between mb-4">
+                                                <span class="gradient-bg text-white px-4 py-2 rounded-full text-sm font-semibold">
+                                                    Jour {{ day.day }}
+                                                </span>
+                                                <span class="text-purple-600 font-semibold">{{ day.location }}</span>
+                                            </div>
+                                            <h3 class="font-display text-xl font-semibold text-gray-900 mb-3">{{ day.title }}</h3>
+                                            <p class="text-gray-600 leading-relaxed">{{ day.description }}</p>
+                                            <div class="mt-4 flex items-center text-sm text-gray-500">
+                                                <i data-feather="moon" class="w-4 h-4 mr-2"></i>
+                                                <span>Hébergement : {{ day.accommodation }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Gallery -->
+                        <div class="mb-12" data-aos="fade-up">
+                            <h2 class="font-display text-4xl font-bold text-gray-900 mb-8">Galerie Photos</h2>
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                <div v-for="(image, index) in gallery" :key="index" 
+                                     class="relative overflow-hidden rounded-2xl card-hover cursor-pointer"
+                                     @click="openModal(index)">
+                                    <img :src="image" :alt="'Photo ' + (index + 1)" class="w-full h-40 object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column - Sticky -->
+                    <div class="lg:col-span-1">
+                        <div class="sticky top-24">
+                            <!-- Price Card -->
+                            <div class="bg-white rounded-3xl shadow-2xl p-8 mb-8 card-hover" data-aos="fade-left">
+                                <div class="text-center mb-6">
+                                    <p class="text-sm text-gray-500 mb-2">À partir de</p>
+                                    <div class="font-display text-5xl font-bold text-gradient mb-2">2 490€</div>
+                                    <p class="text-gray-600">par personne</p>
+                                </div>
+                                
+                                <div class="space-y-4 mb-8">
+                                    <div class="flex items-center text-gray-600">
+                                        <i data-feather="check-circle" class="w-5 h-5 text-green-500 mr-3"></i>
+                                        <span>Vol international inclus</span>
+                                    </div>
+                                    <div class="flex items-center text-gray-600">
+                                        <i data-feather="check-circle" class="w-5 h-5 text-green-500 mr-3"></i>
+                                        <span>Hébergement 3*/4*</span>
+                                    </div>
+                                    <div class="flex items-center text-gray-600">
+                                        <i data-feather="check-circle" class="w-5 h-5 text-green-500 mr-3"></i>
+                                        <span>Repas selon programme</span>
+                                    </div>
+                                    <div class="flex items-center text-gray-600">
+                                        <i data-feather="check-circle" class="w-5 h-5 text-green-500 mr-3"></i>
+                                        <span>Guide francophone</span>
+                                    </div>
+                                </div>
+                                
+                                <button class="w-full btn-primary text-white py-4 rounded-2xl font-semibold text-lg mb-4">
+                                    Réserver maintenant
+                                </button>
+                                
+                                <button class="w-full border-2 border-purple-600 text-purple-600 py-4 rounded-2xl font-semibold text-lg hover:bg-purple-600 hover:text-white transition-all">
+                                    Demander un devis
+                                </button>
+                            </div>
+
+                            <!-- Info Card -->
+                            <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-3xl p-8 card-hover" data-aos="fade-left" data-aos-delay="100">
+                                <h3 class="font-display text-2xl font-bold text-gray-900 mb-6">Infos Pratiques</h3>
+                                
+                                <div class="space-y-4">
+                                    <div>
+                                        <p class="text-sm text-gray-500 mb-1">Départs garantis</p>
+                                        <p class="font-semibold">Tous les dimanches</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500 mb-1">Durée du vol</p>
+                                        <p class="font-semibold">12h30 avec escale</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500 mb-1">Décalage horaire</p>
+                                        <p class="font-semibold">-6h en été, -7h en hiver</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500 mb-1">Meilleure période</p>
+                                        <p class="font-semibold">Avril à octobre</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500 mb-1">Visa</p>
+                                        <p class="font-semibold">Non requis (< 90 jours)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reviews Section -->
+        <section class="py-20 bg-gradient-to-br from-purple-50 to-pink-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="font-display text-4xl font-bold text-center text-gray-900 mb-12" data-aos="fade-up">
+                    Ce que disent nos voyageurs
+                </h2>
+                
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div v-for="(review, index) in reviews" :key="index" 
+                         class="bg-white rounded-2xl p-8 card-hover" data-aos="fade-up" :data-aos-delay="index * 100">
+                        <div class="flex items-center mb-4">
+                            <img :src="review.avatar" :alt="review.name" class="w-12 h-12 rounded-full mr-4">
+                            <div>
+                                <p class="font-semibold text-gray-900">{{ review.name }}</p>
+                                <div class="flex text-yellow-400">
+                                    <i v-for="n in review.rating" :key="n" data-feather="star" class="w-4 h-4 fill-current"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 italic">"{{ review.comment }}"</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modal -->
+        <div v-if="modalOpen" class="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4" @click="closeModal">
+            <div class="relative max-w-4xl max-h-full" @click.stop>
+                <img :src="gallery[currentImage]" alt="Image en plein écran" class="max-w-full max-h-full object-contain rounded-2xl">
+                <button @click="closeModal" class="absolute top-4 right-4 bg-white/20 backdrop-blur-md text-white p-3 rounded-full hover:bg-white/30 transition">
+                    <i data-feather="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+
+        createApp({
+            data() {
+                return {
+                    modalOpen: false,
+                    currentImage: 0,
+                    itinerary: [
+                        {
+                            day: 1,
+                            location: "Lima",
+                            title: "Arrivée à Lima",
+                            description: "Accueil à l'aéroport et transfert à l'hôtel. Première découverte de la capitale péruvienne et de son centre colonial.",
+                            accommodation: "Hôtel 4* à Miraflores"
+                        },
+                        {
+                            day: 2,
+                            location: "Lima - Nazca",
+                            title: "Vol vers Nazca",
+                            description: "Départ tôt le matin pour Nazca. Survol des célèbres lignes de Nazca, véritable mystère archéologique.",
+                            accommodation: "Hôtel 3* à Nazca"
+                        },
+                        {
+                            day: 3,
+                            location: "Nazca - Arequipa",
+                            title: "Route vers Arequipa",
+                            description: "Traversée de la côte désertique jusqu'à la 'ville blanche' d'Arequipa, dominée par ses volcans.",
+                            accommodation: "Hôtel 4* au centre-ville"
+                        },
+                        {
+                            day: 4,
+                            location: "Arequipa",
+                            title: "Découverte d'Arequipa",
+                            description: "Visite du monastère Santa Catalina et de la cathédrale. Déjeuner traditionnel avec vue sur les volcans.",
+                            accommodation: "Même hébergement"
+                        },
+                        {
+                            day: 5,
+                            location: "Arequipa - Colca",
+                            title: "Vallée du Colca",
+                            description: "Route spectaculaire vers la vallée du Colca, l'un des plus grands canyons du monde. Observation des condors.",
+                            accommodation: "Lodge en vallée"
+                        },
+                        {
+                            day: 6,
+                            location: "Colca - Puno",
+                            title: "Lac Titicaca",
+                            description: "Départ pour Puno sur les rives du lac Titicaca. Visite des îles flottantes des Uros.",
+                            accommodation: "Hôtel 3* au bord du lac"
+                        },
+                        {
+                            day: 7,
+                            location: "Puno - Cusco",
+                            title: "Route vers Cusco",
+                            description: "Traversée de l'altiplano jusqu'à l'ancienne capitale inca. Arrêt à La Raya, point culminant du voyage.",
+                            accommodation: "Hôtel 4* à Cusco"
+                        },
+                        {
+                            day: 8,
+                            location: "Cusco",
+                            title: "Cusco et ses trésors",
+                            description: "Visite de la cathédrale et du temple du Soleil. Promenade dans les ruelles pavées du quartier de San Blas.",
+                            accommodation: "Même hébergement"
+                        },
+                        {
+                            day: 9,
+                            location: "Vallée Sacrée",
+                            title: "Vallée Sacrée des Incas",
+                            description: "Excursion dans la vallée sacrée avec visite du marché de Pisac et des ruines d'Ollantaytambo.",
+                            accommodation: "Hôtel 3* dans la vallée"
+                        },
+                        {
+                            day: 10,
+                            location: "Machu Picchu",
+                            title: "Machu Picchu",
+                            description: "Lever tôt pour le Machu Picchu. Visite guidée de la citadelle perdue des Incas, merveille du monde.",
+                            accommodation: "Hôtel à Aguas Calientes"
+                        },
+                        {
+                            day: 11,
+                            location: "Machu Picchu - Cusco",
+                            title: "Retour à Cusco",
+                            description: "Matinée libre pour profiter du site. Retour à Cusco en train dans l'après-midi.",
+                            accommodation: "Hôtel 4* à Cusco"
+                        },
+                        {
+                            day: 12,
+                            location: "Cusco - Lima",
+                            title: "Fin du voyage",
+                            description: "Transfert à l'aéroport et vol retour vers Lima. Départ international en fin de journée."
+                        }
+                    ],
+                    gallery: [
+                        "http://static.photos/travel/640x360/1",
+                        "http://static.photos/nature/640x360/2",
+                        "http://static.photos/travel/640x360/3",
+                        "http://static.photos/nature/640x360/4",
+                        "http://static.photos/travel/640x360/5",
+                        "http://static.photos/nature/640x360/6"
+                    ],
+                    reviews: [
+                        {
+                            name: "Marie Laurent",
+                            avatar: "http://static.photos/people/200x200/1",
+                            rating: 5,
+                            comment: "Un voyage extraordinaire ! Machu Picchu est tout simplement magique. Notre guide était passionné et très compétent."
+                        },
+                        {
+                            name: "Jean-Pierre Martin",
+                            avatar: "http://static.photos/people/200x200/2",
+                            rating: 5,
+                            comment: "Circuit parfaitement organisé. Les paysages sont à couper le souffle et la culture inca fascinante."
+                        },
+                        {
+                            name: "Sophie Bernard",
+                            avatar: "http://static.photos/people/200x200/3",
+                            rating: 4,
+                            comment: "Superbe expérience ! Attention à l'altitude à Cusco, mais le reste est parfait."
+                        }
+                    ]
+                }
+            },
+            methods: {
+                openModal(index) {
+                    this.currentImage = index;
+                    this.modalOpen = true;
+                    document.body.style.overflow = 'hidden';
+                },
+                closeModal() {
+                    this.modalOpen = false;
+                    document.body.style.overflow = 'auto';
+                }
+            },
+            mounted() {
+                AOS.init({
+                    duration: 1000,
+                    once: true
+                });
+                feather.replace();
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>

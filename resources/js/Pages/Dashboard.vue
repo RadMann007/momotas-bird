@@ -37,7 +37,7 @@ import { Map, Calendar, Image as ImageIcon } from 'lucide-vue-next'; // Icônes 
                     >
                         <div class="card-body items-center text-center">
                             <Calendar class="w-12 h-12 text-secondary group-hover:scale-110 transition-transform duration-300" />
-                            <h3 class="card-title mt-2">Journées</h3>
+                            <h3 class="card-title mt-2">Step</h3>
                             <p class="text-gray-500">Planifiez chaque journée d’un circuit</p>
                         </div>
                     </Link>

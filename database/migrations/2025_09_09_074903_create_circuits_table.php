@@ -15,6 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('duration');
+            $table->string('start');
+            $table->string('end');
+            $table->integer('distance');
+            $table->boolean('truck_disponibility')->default(false);
+            $table->integer('price_3_pers')->default(0);
+            $table->integer('price_6_pers')->default(0);
+            $table->integer('price_max_pers')->default(0);
             $table->text('description')->nullable();
             $table->string('image')->nullable();
             $table->timestamps();

@@ -2,18 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\ContactMail;
+use App\Models\Circuit;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
-class ContactController extends Controller
+class ItineraireController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('contact');
+        return Inertia::render('Itineraires', [
+            'itineraires' => Circuit::all(),
+            'canLogin' => Route::has('login'),
+            'canRegister' => Route::has('register'),
+        ]);
     }
 
     /**
@@ -29,23 +34,19 @@ class ContactController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email',
-            'message' => 'required',
-        ]);
-
-        Mail::to('support@momotas-bird.com')->send(new ContactMail($request->all()));
-
-        return redirect()->back()->with('success', 'Your message has been sent successfully!');
+        //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(String $id)
     {
-        //
+        
+        $circuit = Circuit::with('days')->findOrFail($id);
+        return Inertia::render('Itineraires/Show', [
+            'circuit' => $circuit
+        ]);
     }
 
     /**
