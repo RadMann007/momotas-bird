@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\DayCircuit;
+use App\Models\Circuit;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,9 +14,8 @@ return new class extends Migration
     {
         Schema::create('image_days', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(DayCircuit::class)->constrained()->onDelete('cascade');
             $table->string('path');
-            $table->string('caption')->nullable();
+            $table->morphs('imageable');
             $table->timestamps();
         });
     }

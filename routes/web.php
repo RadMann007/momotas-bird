@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\BirdController;
 use App\Http\Controllers\CircuitController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DayCircuitController;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ItineraireController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Circuit;
@@ -44,5 +46,14 @@ Route::post('/contact', [ContactController::class, 'store'])->name('contact.stor
 Route::get('/itineraires', [ItineraireController::class, 'index'])->name('itineraires.index');
 Route::get('/itineraires/{id}', [ItineraireController::class, 'show'])->name('itineraires.show');
 
+// Birds
+Route::middleware('auth')->group(function () {
+    Route::resource('birds', BirdController::class);
+});
+
+//Image Morph
+Route::middleware('auth')->group(function () {
+    Route::delete('/image/{id}', [ImageController::class, 'destroy'])->name('image.destroy');
+});
 
 require __DIR__.'/auth.php';

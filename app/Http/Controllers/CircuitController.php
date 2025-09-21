@@ -34,7 +34,7 @@ class CircuitController extends Controller
     {
         $data = $request->validate([
             'title' => 'required|string|max:255',
-            'duration' => 'required|string|max:255',
+            'duration' => 'required',
             'description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'start' => 'required',
@@ -43,14 +43,24 @@ class CircuitController extends Controller
             'truck_disponibility' =>'required',
             'price_3_pers' => 'required',
             'price_6_pers'=> 'required',
-            'price_max_pers' => 'required'
+            'price_max_pers' => 'required',
+            'images.*' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
         ]);
 
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('circuits', 'public');
         }
 
-        Circuit::create($data);
+        $circuit = Circuit::create($data);
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $file) {
+                $path = $file->store('circuits', 'public');
+                $circuit->images()->create([
+                    'path' => $path,
+                ]);
+            }
+        }
 
         return redirect()->route('circuits.index')->with('success', 'Circuit créé avec succès !');
     }
@@ -61,7 +71,7 @@ class CircuitController extends Controller
     public function show(Circuit $circuit)
     {
         return Inertia::render('Circuit/Show', [
-            'circuit' => $circuit->load('days')
+            'circuit' => $circuit->load('days', 'images')
         ]);
     }
 
@@ -70,7 +80,7 @@ class CircuitController extends Controller
      */
     public function edit(string $id)
     {
-        $circuit = Circuit::findOrFail($id);
+        $circuit = Circuit::with('images')->findOrFail($id);
         return Inertia::render('Circuit/Edit', [
             'circuit' => $circuit
         ]);
@@ -83,7 +93,7 @@ class CircuitController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'duration' => 'required|string|max:255',
+            'duration' => 'required',
             'description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'start' => 'required',
@@ -92,7 +102,8 @@ class CircuitController extends Controller
             'truck_disponibility' =>'required',
             'price_3_pers' => 'required',
             'price_6_pers'=> 'required',
-            'price_max_pers' => 'required'
+            'price_max_pers' => 'required',
+            'images.*' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
         ]);
 
         $data = $request->except('image');
@@ -110,6 +121,16 @@ class CircuitController extends Controller
 
         if($request->hasFile('image') == false){
             $data['image'] = $circuit->image;
+        }
+
+        //Gallery image
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $file) {
+                $path = $file->store('circuits', 'public');
+                $circuit->images()->create([
+                    'path' => $path,
+                ]);
+            }
         }
 
         $circuit->update($data);

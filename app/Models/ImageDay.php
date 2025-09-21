@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class ImageDay extends Model
 {
-    protected $fillable = ['path', 'caption', 'day_circuit_id'];
+    protected $fillable = ['path'];
 
-    public function dayCircuit()
+    public function imageable()
     {
-        return $this->belongsTo(DayCircuit::class);
+        return $this->morphTo();
     }
 }

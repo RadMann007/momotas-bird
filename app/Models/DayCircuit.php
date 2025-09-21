@@ -15,16 +15,12 @@ class DayCircuit extends Model
         'start',
         'end',
         'hotel_name',
-        'hotel_description'
+        'hotel_description',
+        'day'
     ];
 
     public function circuit()
     {
         return $this->belongsTo(Circuit::class);
-    }
-
-    public function images()
-    {
-        return $this->hasMany(ImageDay::class);
     }
 }

@@ -33,62 +33,61 @@ const submit = () => {
     <GuestLayout>
         <Head title="Log in" />
 
-        <div v-if="status" class="mb-4 text-sm font-medium text-green-600">
+        <h2 class="text-2xl font-bold text-gray-900 text-center">Sign in to your account</h2>
+
+        <div v-if="status" class="mb-4 mt-6 text-sm font-medium text-green-600">
             {{ status }}
         </div>
 
-        <form @submit.prevent="submit">
+        <form @submit.prevent="submit" class="mt-8 space-y-6">
             <div>
-                <InputLabel for="email" value="Email" />
-
+                <InputLabel for="email" value="Email" class="text-gray-700" />
                 <TextInput
                     id="email"
                     type="email"
-                    class="mt-1 block w-full"
+                    class="mt-1 block w-full px-4 py-3 border-gray-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500"
                     v-model="form.email"
                     required
                     autofocus
                     autocomplete="username"
+                    placeholder="you@example.com"
                 />
-
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
-
+            <div>
+                <div class="flex items-center justify-between">
+                    <InputLabel for="password" value="Password" class="text-gray-700" />
+                    <Link
+                        v-if="canResetPassword"
+                        :href="route('password.request')"
+                        class="text-sm text-emerald-600 hover:underline"
+                    >
+                        Forgot your password?
+                    </Link>
+                </div>
                 <TextInput
                     id="password"
                     type="password"
-                    class="mt-1 block w-full"
+                    class="mt-1 block w-full px-4 py-3 border-gray-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500"
                     v-model="form.password"
                     required
                     autocomplete="current-password"
+                    placeholder="••••••••"
                 />
-
                 <InputError class="mt-2" :message="form.errors.password" />
             </div>
 
-            <div class="mt-4 block">
+            <div class="flex items-center justify-between">
                 <label class="flex items-center">
-                    <Checkbox name="remember" v-model:checked="form.remember" />
-                    <span class="ms-2 text-sm text-gray-600"
-                        >Remember me</span
-                    >
+                    <Checkbox name="remember" v-model:checked="form.remember" class="rounded border-gray-300 text-emerald-600 shadow-sm focus:ring-emerald-500" />
+                    <span class="ms-2 text-sm text-gray-600">Remember me</span>
                 </label>
             </div>
 
-            <div class="mt-4 flex items-center justify-end">
-                <Link
-                    v-if="canResetPassword"
-                    :href="route('password.request')"
-                    class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                >
-                    Forgot your password?
-                </Link>
-
+            <div>
                 <PrimaryButton
-                    class="ms-4"
+                    class="w-full justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500"
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                 >
@@ -96,5 +95,12 @@ const submit = () => {
                 </PrimaryButton>
             </div>
         </form>
+
+        <p class="mt-8 text-center text-sm text-gray-600">
+            Not a member?
+            <Link :href="route('register')" class="font-medium text-emerald-600 hover:underline">
+                Sign up
+            </Link>
+        </p>
     </GuestLayout>
 </template>

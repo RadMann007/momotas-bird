@@ -43,7 +43,7 @@ class ItineraireController extends Controller
     public function show(String $id)
     {
         
-        $circuit = Circuit::with('days')->findOrFail($id);
+        $circuit = Circuit::with(['days', 'images'])->findOrFail($id);
         return Inertia::render('Itineraires/Show', [
             'circuit' => $circuit
         ]);

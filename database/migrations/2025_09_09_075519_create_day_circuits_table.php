@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create('day_circuits', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->integer('day')->unique();
             $table->string('start')->nullable();
             $table->string('end')->nullable();
             $table->string('hotel_name')->nullable();

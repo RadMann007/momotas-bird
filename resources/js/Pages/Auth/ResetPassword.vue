@@ -35,61 +35,55 @@ const submit = () => {
     <GuestLayout>
         <Head title="Reset Password" />
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="email" value="Email" />
+        <h2 class="text-2xl font-bold text-gray-900 text-center">Reset Your Password</h2>
 
+        <form @submit.prevent="submit" class="mt-8 space-y-6">
+            <div>
+                <InputLabel for="email" value="Email" class="text-gray-700" />
                 <TextInput
                     id="email"
                     type="email"
-                    class="mt-1 block w-full"
+                    class="mt-1 block w-full px-4 py-3 bg-gray-200 border-gray-300 rounded-lg shadow-sm"
                     v-model="form.email"
                     required
                     autofocus
                     autocomplete="username"
+                    readonly
                 />
-
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
-
+            <div>
+                <InputLabel for="password" value="Password" class="text-gray-700" />
                 <TextInput
                     id="password"
                     type="password"
-                    class="mt-1 block w-full"
+                    class="mt-1 block w-full px-4 py-3 border-gray-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500"
                     v-model="form.password"
                     required
                     autocomplete="new-password"
+                    placeholder="New Password"
                 />
-
                 <InputError class="mt-2" :message="form.errors.password" />
             </div>
 
-            <div class="mt-4">
-                <InputLabel
-                    for="password_confirmation"
-                    value="Confirm Password"
-                />
-
+            <div>
+                <InputLabel for="password_confirmation" value="Confirm Password" class="text-gray-700" />
                 <TextInput
                     id="password_confirmation"
                     type="password"
-                    class="mt-1 block w-full"
+                    class="mt-1 block w-full px-4 py-3 border-gray-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500"
                     v-model="form.password_confirmation"
                     required
                     autocomplete="new-password"
+                    placeholder="Confirm New Password"
                 />
-
-                <InputError
-                    class="mt-2"
-                    :message="form.errors.password_confirmation"
-                />
+                <InputError class="mt-2" :message="form.errors.password_confirmation" />
             </div>
 
-            <div class="mt-4 flex items-center justify-end">
+            <div>
                 <PrimaryButton
+                    class="w-full justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500"
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                 >

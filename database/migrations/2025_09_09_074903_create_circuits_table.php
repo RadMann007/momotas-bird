@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('circuits', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('duration');
+            $table->integer('duration')->nullable()->default(0);
             $table->string('start');
             $table->string('end');
             $table->integer('distance');

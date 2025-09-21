@@ -24,4 +24,9 @@ class Circuit extends Model
     {
         return $this->hasMany(DayCircuit::class);
     }
+
+    public function images()
+    {
+        return $this->morphMany(ImageDay::class, 'imageable');
+    }
 }

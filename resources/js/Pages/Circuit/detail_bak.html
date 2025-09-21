@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circuit Ornithologique | Ailes & Plumes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0E7C6B',
+                        secondary: '#FF9E1B',
+                        accent: '#3A86FF',
+                        natural: '#2A9D8F',
+                        light: '#F8FAF9',
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-out',
+                        'slide-up': 'slideUp 0.7s ease-out',
+                        'bounce-slow': 'bounce 2s infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/css">
+        body {
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .parallax {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        .bird-animation {
+            animation: fly 20s infinite alternate ease-in-out;
+        }
+        @keyframes fly {
+            0% { transform: translateX(0) translateY(0) rotate(0deg); }
+            50% { transform: translateX(20px) translateY(-10px) rotate(2deg); }
+            100% { transform: translateX(-20px) translateY(5px) rotate(-2deg); }
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <!-- Header -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <i class="fas fa-dove text-primary text-2xl mr-2"></i>
+                <span class="text-xl font-bold text-primary">Ailes & Plumes</span>
+            </div>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#" class="text-gray-600 hover:text-primary transition-colors">Accueil</a>
+                <a href="#" class="text-primary font-medium">Circuits</a>
+                <a href="#" class="text-gray-600 hover:text-primary transition-colors">Espèces</a>
+                <a href="#" class="text-gray-600 hover:text-primary transition-colors">Blog</a>
+                <a href="#" class="text-gray-600 hover:text-primary transition-colors">Contact</a>
+            </nav>
+            <button class="md:hidden text-primary">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative h-96 flex items-center justify-center">
+        <div class="parallax absolute inset-0 z-0" style="background-image: url('https://images.unsplash.com/photo-1504871248106-2d6dbba4ec99?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');"></div>
+        <div class="absolute inset-0 bg-black opacity-40 z-0"></div>
+        <div class="container mx-auto px-4 z-10 text-center text-white animate-fade-in">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4 animate-slide-up">Circuit des Oiseaux Rares</h1>
+            <p class="text-xl max-w-2xl mx-auto animate-slide-up">Découvrez les espèces les plus fascinantes à travers des paysages exceptionnels</p>
+            <div class="mt-8 flex justify-center space-x-4">
+                <button class="bg-primary hover:bg-opacity-90 text-white px-6 py-3 rounded-full font-medium transition-all transform hover:scale-105">
+                    Réserver maintenant
+                </button>
+                <button class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-6 py-3 rounded-full font-medium transition-all">
+                    Voir les détails
+                </button>
+            </div>
+        </div>
+        <div class="absolute bottom-0 left-0 w-full flex justify-center animate-bounce-slow">
+            <a href="#circuit-details" class="text-white text-4xl"><i class="fas fa-chevron-down"></i></a>
+        </div>
+    </section>
+
+    <!-- Circuit Details -->
+    <section id="circuit-details" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Main Content -->
+                <div class="lg:col-span-2">
+                    <h2 class="text-3xl font-bold text-primary mb-6">Détails du Circuit</h2>
+                    <p class="text-gray-700 mb-6">Ce circuit exceptionnel vous emmène à travers les plus beaux sites d'observation ornithologique de la région. Guidé par des experts, vous découvrirez des espèces rares et des paysages à couper le souffle.</p>
+                    
+                    <div class="bg-gray-50 p-6 rounded-xl mb-8 card-hover">
+                        <h3 class="text-xl font-semibold text-primary mb-4"><i class="fas fa-info-circle mr-2"></i>Informations générales</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="flex items-center">
+                                <div class="bg-primary bg-opacity-10 p-3 rounded-full mr-3">
+                                    <i class="fas fa-calendar-day text-primary"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Durée</p>
+                                    <p class="font-medium">5 jours / 4 nuits</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="bg-primary bg-opacity-10 p-3 rounded-full mr-3">
+                                    <i class="fas fa-users text-primary"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Taille du groupe</p>
+                                    <p class="font-medium">Max. 12 personnes</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="bg-primary bg-opacity-10 p-3 rounded-full mr-3">
+                                    <i class="fas fa-map-marked-alt text-primary"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Difficulté</p>
+                                    <p class="font-medium">Modérée</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="bg-primary bg-opacity-10 p-3 rounded-full mr-3">
+                                    <i class="fas fa-binoculars text-primary"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Espèces observables</p>
+                                    <p class="font-medium">45+ espèces</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Étapes du circuit -->
+                    <h3 class="text-2xl font-semibold text-primary mb-6">Les étapes de votre voyage</h3>
+                    
+                    <!-- Étape 1 -->
+                    <div class="mb-10 overflow-hidden rounded-2xl shadow-lg card-hover">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1551085255-e6b7d32cb0ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Marais de Saint-Martin" class="w-full h-64 object-cover">
+                            <div class="absolute top-4 left-4 bg-secondary text-white px-3 py-1 rounded-full font-medium">
+                                Jour 1
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h4 class="text-xl font-bold text-primary mb-2">Marais de Saint-Martin</h4>
+                            <p class="text-gray-700 mb-4">Observation des hérons, aigrettes et canards sauvages dans leur habitat naturel. Possibilité d'observer le rare butor étoilé à la tombée de la nuit.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-primary bg-opacity-10 text-primary px-3 py-1 rounded-full text-sm">Héron cendré</span>
+                                <span class="bg-primary bg-opacity-10 text-primary px-3 py-1 rounded-full text-sm">Aigrette garzette</span>
+                                <span class="bg-primary bg-opacity-10 text-primary px-3 py-1 rounded-full text-sm">Butor étoilé</span>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg mt-4">
+                                <h5 class="font-semibold text-primary mb-2"><i class="fas fa-hotel mr-2"></i>Hébergement</h5>
+                                <div class="flex items-start">
+                                    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Auberge du Marais" class="w-20 h-20 object-cover rounded-lg mr-4">
+                                    <div>
+                                        <p class="font-medium">Auberge du Marais</p>
+                                        <div class="flex items-center text-sm text-yellow-500 my-1">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                            <span class="text-gray-600 ml-2">4.5/5</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600">Charmante auberge au cœur des marais, avec vue imprenable sur les zones humides.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Étape 2 -->
+                    <div class="mb-10 overflow-hidden rounded-2xl shadow-lg card-hover">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1509255929945-586a420363cf?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Forêt de la Brunelle" class="w-full h-64 object-cover">
+                            <div class="absolute top-4 left-4 bg-secondary text-white px-3 py-1 rounded-full font-medium">
+                                Jour 2
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h4 class="text-xl font-bold text-primary mb-2">Forêt de la Brunelle</h4>
+                            <p class="text-gray-700 mb-4">Randonnée à travers la forêt ancienne à la recherche des pics et autres oiseaux forestiers. Écoute des chants caractéristiques et observation des nids.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-primary bg-opacity-10 text-primary px-3 py-1 rounded-full text-sm">Pic noir</span>
+                                <span class="bg-primary bg-opacity-10 text-primary px-3 py-1 rounded-full text-sm">Grimpereau des bois</span>
+                                <span class="bg-primary bg-opacity-10 text-primary px-3 py-1 rounded-full text-sm">Pouillot siffleur</span>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg mt-4">
+                                <h5 class="font-semibold text-primary mb-2"><i class="fas fa-hotel mr-2"></i>Hébergement</h5>
+                                <div class="flex items-start">
+                                    <img src="https://images.unsplash.com/photo-1586375300773-8384e3e4916f?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Le Nid des Cîmes" class="w-20 h-20 object-cover rounded-lg mr-4">
+                                    <div>
+                                        <p class="font-medium">Le Nid des Cîmes</p>
+                                        <div class="flex items-center text-sm text-yellow-500 my-1">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <span class="text-gray-600 ml-2">4.8/5</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600">Eco-lodge en bordure de forêt, proposant des hébergements durables et confortables.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Étape 3 -->
+                    <div class="mb-10 overflow-hidden rounded-2xl shadow-lg card-hover">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Falaises des Aigles" class="w-full h-64 object-cover">
+                            <div class="absolute top-4 left-4 bg-secondary text-white px-3 py-1 rounded-full font-medium">
+                                Jour 3
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h4 class="text-xl font-bold text-primary mb-2">Falaises des Aigles</h4>
+                            <p class="text-gray-700 mb-4">Journée consacrée à l'observation des rapaces nicheurs. Avec un peu de chance, vous pourrez admirer le vol majestueux de l'aigle royal et du faucon pèlerin.</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="bg-primary bg-opacity-10 text-primary px-3 py-1 rounded-full text-sm">Aigle royal</span>
+                                <span class="bg-primary bg-opacity-10 text-primary px-3 py-1 rounded-full text-sm">Faucon pèlerin</span>
+                                <span class="bg-primary bg-opacity-10 text-primary px-3 py-1 rounded-full text-sm">Crave à bec rouge</span>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg mt-4">
+                                <h5 class="font-semibold text-primary mb-2"><i class="fas fa-hotel mr-2"></i>Hébergement</h5>
+                                <div class="flex items-start">
+                                    <img src="https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Vue des Aigles" class="w-20 h-20 object-cover rounded-lg mr-4">
+                                    <div>
+                                        <p class="font-medium">Vue des Aigles</p>
+                                        <div class="flex items-center text-sm text-yellow-500 my-1">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <span class="text-gray-600 ml-2">4.2/5</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600">Hotel avec vue panoramique sur les falaises, idéal pour observer les rapaces au coucher du soleil.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="lg:col-span-1">
+                    <div class="sticky top-24">
+                        <!-- Booking Card -->
+                        <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-8 card-hover">
+                            <div class="bg-primary text-white p-4 text-center">
+                                <p class="font-bold text-xl">À partir de 750€</p>
+                                <p class="text-sm">par personne (5 jours)</p>
+                            </div>
+                            <div class="p-6">
+                                <div class="mb-6">
+                                    <h4 class="font-semibold text-primary mb-3">Prochains départs</h4>
+                                    <div class="space-y-3">
+                                        <div class="flex justify-between items-center border-b pb-2">
+                                            <p>15 Juillet 2023</p>
+                                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">4 places</span>
+                                        </div>
+                                        <div class="flex justify-between items-center border-b pb-2">
+                                            <p>22 Juillet 2023</p>
+                                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">6 places</span>
+                                        </div>
+                                        <div class="flex justify-between items-center border-b pb-2">
+                                            <p>5 Août 2023</p>
+                                            <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded">Complet</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="w-full bg-secondary hover:bg-opacity-90 text-white py-3 rounded-lg font-medium transition-all transform hover:scale-105 mb-4">
+                                    Réserver ce circuit
+                                </button>
+                                <button class="w-full border border-primary text-primary hover:bg-primary hover:text-white py-3 rounded-lg font-medium transition-all">
+                                    Contacter un expert
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Guide Info -->
+                        <div class="bg-white rounded-xl shadow-lg p-6 mb-8 card-hover">
+                            <h4 class="font-semibold text-primary mb-4">Votre guide</h4>
+                            <div class="flex items-center">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Guide" class="w-16 h-16 rounded-full object-cover mr-4">
+                                <div>
+                                    <p class="font-medium">Thomas Leroy</p>
+                                    <p class="text-sm text-gray-600">Ornithologue depuis 12 ans</p>
+                                    <div class="flex text-yellow-400 text-sm mt-1">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                        <span class="text-gray-600 ml-2">4.7</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Included -->
+                        <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                            <h4 class="font-semibold text-primary mb-4">Ce prix comprend</h4>
+                            <ul class="space-y-3">
+                                <li class="flex items-center">
+                                    <i class="fas fa-check text-green-500 mr-3"></i>
+                                    <span>Hébergement en chambre double</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-check text-green-500 mr-3"></i>
+                                    <span>Tous les repas</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-check text-green-500 mr-3"></i>
+                                    <span>Guide expert</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-check text-green-500 mr-3"></i>
+                                    <span>Matériel d'observation</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-check text-green-500 mr-3"></i>
+                                    <span>Transport entre les sites</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-primary text-center mb-12">Ils ont vécu ce circuit</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Témoignage 1 -->
+                <div class="bg-white p-6 rounded-xl shadow-md card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="text-yellow-500 mr-2">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span class="text-gray-500 text-sm">15 Juin 2023</span>
+                    </div>
+                    <p class="text-gray-700 mb-4">"J'ai enfin pu observer le butor étoilé dont je rêvais depuis des années. Notre guide Thomas est incroyablement compétent et passionnant."</p>
+                    <div class="flex items-center">
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=50&q=80" alt="Marie" class="w-10 h-10 rounded-full object-cover mr-3">
+                        <span class="font-medium">Marie, Paris</span>
+                    </div>
+                </div>
+
+                <!-- Témoignage 2 -->
+                <div class="bg-white p-6 rounded-xl shadow-md card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="text-yellow-500 mr-2">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span class="text-gray-500 text-sm">2 Juin 2023</span>
+                    </div>
+                    <p class="text-gray-700 mb-4">"Les paysages étaient à couper le souffle et les observations d'oiseaux dépassaient toutes mes attentes. Je recommande vivement ce circuit !"</p>
+                    <div class="flex items-center">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=50&q=80" alt="Sophie" class="w-10 h-10 rounded-full object-cover mr-3">
+                        <span class="font-medium">Sophie, Lyon</span>
+                    </div>
+                </div>
+
+                <!-- Témoignage 3 -->
+                <div class="bg-white p-6 rounded-xl shadow-md card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="text-yellow-500 mr-2">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <span class="text-gray-500 text-sm">20 Mai 2023</span>
+                    </div>
+                    <p class="text-gray-700 mb-4">"Un circuit parfaitement organisé, des hôtels charmants et un guide exceptionnel. J'ai appris énormément sur l'ornithologie et la biodiversité."</p>
+                    <div class="flex items-center">
+                        <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=50&q=80" alt="Pierre" class="w-10 h-10 rounded-full object-cover mr-3">
+                        <span class="font-medium">Pierre, Bordeaux</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-16 bg-primary text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold mb-6">Prêt à vivre l'aventure ornithologique ?</h2>
+            <p class="text-xl max-w-2xl mx-auto mb-8">Rejoignez-nous pour une expérience unique d'observation des oiseaux dans les plus beaux sites naturels.</p>
+            <button class="bg-secondary hover:bg-opacity-90 text-white px-8 py-4 rounded-full font-medium text-lg transition-all transform hover:scale-105">
+                Réserver maintenant
+            </button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-dove text-primary text-2xl mr-2"></i>
+                        <span class="text-xl font-bold">Ailes & Plumes</span>
+                    </div>
+                    <p class="text-gray-400">Découvrez la beauté des oiseaux à travers nos circuits d'exception guidés par des experts.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Circuits</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Circuit des oiseaux rares</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Observation des rapaces</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Tour ornithologique</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Week-end découverte</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contact</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-center">
+                            <i class="fas fa-map-marker-alt mr-3 text-primary"></i>
+                            <span class="text-gray-400">12 Rue des Oiseaux, 75005 Paris</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone mr-3 text-primary"></i>
+                            <span class="text-gray-400">+33 1 23 45 67 89</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-3 text-primary"></i>
+                            <span class="text-gray-400">contact@ailes-plumes.fr</span>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Suivez-nous</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="bg-gray-700 hover:bg-primary w-10 h-10 rounded-full flex items-center justify-center transition-colors">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="bg-gray-700 hover:bg-primary w-10 h-10 rounded-full flex items-center justify-center transition-colors">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="bg-gray-700 hover:bg-primary w-10 h-10 rounded-full flex items-center justify-center transition-colors">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="bg-gray-700 hover:bg-primary w-10 h-10 rounded-full flex items-center justify-center transition-colors">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>© 2023 Ailes & Plumes. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating bird animation -->
+    <div class="fixed bottom-4 right-4 text-primary text-4xl opacity-10 bird-animation">
+        <i class="fas fa-dove"></i>
+    </div>
+
+    <script>
+        // Simple animation on scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-fade-in');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            document.querySelectorAll('.card-hover').forEach(card => {
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>

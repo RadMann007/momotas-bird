@@ -42,6 +42,7 @@ class DayCircuitController extends Controller //Step
             'circuit_id' => 'required',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'distance' => 'required',
+            'day' => 'required',
             'start' => 'required',
             'end' => 'required',
             'hotel_name' => 'required',
@@ -71,9 +72,9 @@ class DayCircuitController extends Controller //Step
      */
     public function edit(String $id)
     {
-        $etape = DayCircuit::find($id);
+        $step = DayCircuit::find($id);
         return Inertia::render('Day/Edit', [
-            'etape' => $etape,
+            'step' => $step,
             'circuits' => Circuit::all()
         ]);
     }
@@ -89,6 +90,7 @@ class DayCircuitController extends Controller //Step
             'circuit_id' => 'required',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'distance' => 'required',
+            'day' => 'required',
             'start' => 'required',
             'end' => 'required',
             'hotel_name' => 'required',

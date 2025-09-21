@@ -1,6 +1,6 @@
 <script setup>
+import { ref, onMounted } from 'vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
-import { onMounted, ref } from 'vue';
 
 defineProps({
     canLogin: Boolean,
@@ -17,11 +17,22 @@ const form = useForm({
     message: ''
 });
 
+const messageSent = ref(false);
+
 const submit = () => {
     form.post(route('contact.store'), {
-        onFinish: () => form.reset('name', 'email', 'message'),
+        preserveScroll: true,
+        onSuccess: () => {
+            form.reset();
+            messageSent.value = true;
+            setTimeout(() => {
+                messageSent.value = false;
+            }, 4000);
+        },
     });
 };
+
+const isMobileMenuOpen = ref(false);
 
 const galleryImages = [
     { id: 1, src: '/images/2.jpg', alt: 'Van Dam\'s Vanga', name: 'Van Dam\'s Vanga' },
@@ -32,39 +43,114 @@ const galleryImages = [
     { id: 6, src: '/images/7.jpg', alt: 'Madagascar Fody', name: 'Madagascar Fody' },
 ];
 
-const slides = ref([
-    {
-        src: '/images/1.jpg',
-        title: "The Birdwatching Adventure of a Lifetime",
-        subtitle: "Discover unique bird species from around the world through our specialized tours.",
-        color: "emerald"
+const carouselSlides = ref([
+    { 
+        src: '/images/1.jpg', 
+        title: 'MOMOTAS', 
+        name: 'BIRD', 
+        des: 'Your specialist in birdwatching trips in Madagascar.' 
     },
-    {
-        src: '/images/2.jpg',
-        title: "Breathtaking Landscapes",
-        subtitle: "Explore the diverse fauna and flora of Madagascar.",
-        color: "sky"
+    { 
+        src: '/images/2.jpg', 
+        title: 'Discover', 
+        name: 'Van Dam\'s Vanga', 
+        des: 'One of Madagascar\'s most elusive and sought-after birds.' 
     },
-    {
-        src: '/images/3.jpg',
-        title: "Guided by Passionate Experts",
-        subtitle: "Our local guides take you off the beaten path.",
-        color: "amber"
+    { 
+        src: '/images/3.jpg', 
+        title: 'Explore', 
+        name: 'Blue Coua', 
+        des: 'A stunningly vibrant bird, often seen foraging on the forest floor.' 
+    },
+    { 
+        src: '/images/4.jpg', 
+        title: 'Witness', 
+        name: 'Indri Lemur', 
+        des: 'The haunting calls of the Indri are an unforgettable part of the forest.' 
+    },
+    { 
+        src: '/images/5.jpg', 
+        title: 'Marvel at', 
+        name: 'Bird of Paradise', 
+        des: 'Known for its spectacular plumage and elaborate mating dances.' 
+    },
+    { 
+        src: '/images/6.jpg', 
+        title: 'Seek out', 
+        name: 'Madagascar Fish Eagle', 
+        des: 'A majestic and critically endangered raptor from the western coast.' 
+    },
+    { 
+        src: '/images/7.jpg', 
+        title: 'Spot the', 
+        name: 'Madagascar Fody', 
+        des: 'The brilliant red of the male Fody is a common and beautiful sight.' 
     },
 ]);
 
-const currentSlide = ref(0);
+const carousel = ref(null);
+const list = ref(null);
+const runningTime = ref(null);
+const nextBtn = ref(null);
+const prevBtn = ref(null);
 
-const nextSlide = () => {
-    currentSlide.value = (currentSlide.value + 1) % slides.value.length;
+let timeRunning = 3000;
+let timeAutoNext = 7000;
+let runTimeOut;
+let runNextAuto;
+
+const showSlider = (type) => {
+    if (!list.value) return;
+    let sliderItemsDom = list.value.querySelectorAll('.carousel .list .item');
+    if (type === 'next') {
+        list.value.appendChild(sliderItemsDom[0]);
+        carousel.value.classList.add('next');
+    } else {
+        list.value.prepend(sliderItemsDom[sliderItemsDom.length - 1]);
+        carousel.value.classList.add('prev');
+    }
+
+    clearTimeout(runTimeOut);
+    runTimeOut = setTimeout(() => {
+        carousel.value.classList.remove('next');
+        carousel.value.classList.remove('prev');
+    }, timeRunning);
+
+    clearTimeout(runNextAuto);
+    runNextAuto = setTimeout(() => {
+        if (nextBtn.value) {
+            nextBtn.value.click();
+        }
+    }, timeAutoNext);
+
+    resetTimeAnimation();
 };
 
-const prevSlide = () => {
-    currentSlide.value = (currentSlide.value - 1 + slides.value.length) % slides.value.length;
+const resetTimeAnimation = () => {
+    if (runningTime.value) {
+        runningTime.value.style.animation = 'none';
+        runningTime.value.offsetHeight; // trigger reflow
+        runningTime.value.style.animation = null;
+        runningTime.value.style.animation = 'runningTime 7s linear 1 forwards';
+    }
 };
 
 onMounted(() => {
-    // Animate on scroll
+    // Carousel logic
+    if (nextBtn.value) {
+        nextBtn.value.onclick = () => showSlider('next');
+    }
+    if (prevBtn.value) {
+        prevBtn.value.onclick = () => showSlider('prev');
+    }
+    runNextAuto = setTimeout(() => {
+        if (nextBtn.value) {
+            nextBtn.value.click();
+        }
+    }, timeAutoNext);
+    resetTimeAnimation();
+
+    // Animate on scroll from Welcome_bak.vue
     const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
             if (entry.isIntersecting) {
@@ -77,35 +163,33 @@ onMounted(() => {
     document.querySelectorAll('.animate-on-scroll').forEach((el) => {
         observer.observe(el);
     });
-
-    // Carousel interval
-    setInterval(() => {
-        nextSlide();
-    }, 7000);
 });
 
 </script>
 
 <template>
-    <Head title="Home - Momotas Bird" />
+    <Head title="Momotas Bird" />
 
-    <div class="bg-gray-50 text-slate-800 font-sans antialiased">
+    <div class="font-sans antialiased bg-gray-50 text-slate-800">
         <!-- HEADER -->
         <header class="fixed top-0 w-full bg-white/80 backdrop-blur-lg shadow-sm z-50">
             <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
                 <Link href="/" class="text-2xl font-bold text-emerald-600 tracking-tight flex items-center gap-2">
-                    <span class="text-3xl">🦜</span>
+                    <img src="/images/logo.png" class="size-16"/>
                     <span>Momotas Bird</span>
                 </Link>
                 <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
                     <a href="#itineraires" class="text-gray-600 hover:text-emerald-600 transition-colors duration-300">Tours</a>
                     <a href="#galerie" class="text-gray-600 hover:text-emerald-600 transition-colors duration-300">Gallery</a>
+                    <a href="#about" class="text-gray-600 hover:text-emerald-600 transition-colors duration-300">About</a>
+                    <a href="#testimonials" class="text-gray-600 hover:text-emerald-600 transition-colors duration-300">Testimonials</a>
                     <a href="#contact" class="text-gray-600 hover:text-emerald-600 transition-colors duration-300">Contact</a>
                 </nav>
                 <div class="hidden md:flex items-center gap-4">
                     <template v-if="!$page.props.auth.user">
                         <Link v-if="canLogin" :href="route('login')" class="text-sm font-medium text-gray-600 hover:text-emerald-600">Log in</Link>
-                        <Link v-if="canRegister" :href="route('register')" class="ml-4 text-sm font-bold bg-emerald-500 text-white px-4 py-2 rounded-full hover:bg-emerald-600 transition-transform transform hover:scale-105">
+                        <Link v-if="canRegister" :href="route('register')" 
+                        class="btn btn-success btn-outline">
                             Register
                         </Link>
                     </template>
@@ -113,63 +197,99 @@ onMounted(() => {
                         Dashboard
                     </Link>
                 </div>
+                <!-- Hamburger Button -->
+                <div class="md:hidden">
+                    <button @click="isMobileMenuOpen = !isMobileMenuOpen" class="text-gray-600 hover:text-emerald-600 focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                </div>
+            </div>
+            <!-- Mobile Menu -->
+            <div v-show="isMobileMenuOpen" class="md:hidden bg-white/95 backdrop-blur-lg">
+                <nav class="px-2 pt-2 pb-4 space-y-1 sm:px-3">
+                    <a href="#itineraires" @click="isMobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-emerald-600 hover:bg-gray-50">Tours</a>
+                    <a href="#galerie" @click="isMobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-emerald-600 hover:bg-gray-50">Gallery</a>
+                    <a href="#about" @click="isMobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-emerald-600 hover:bg-gray-50">About</a>
+                    <a href="#testimonials" @click="isMobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-emerald-600 hover:bg-gray-50">Testimonials</a>
+                    <a href="#contact" @click="isMobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-emerald-600 hover:bg-gray-50">Contact</a>
+                </nav>
+                <div class="px-5 py-4 border-t border-gray-200">
+                    <template v-if="!$page.props.auth.user">
+                        <Link v-if="canLogin" :href="route('login')" @click="isMobileMenuOpen = false" class="block w-full text-left text-base font-medium text-gray-600 hover:text-emerald-600 mb-3">Log in</Link>
+                        <Link v-if="canRegister" :href="route('register')" @click="isMobileMenuOpen = false" class="block w-full text-center text-base font-bold bg-emerald-500 text-white px-4 py-2 rounded-full hover:bg-emerald-600">
+                            Register
+                        </Link>
+                    </template>
+                    <Link v-else :href="route('dashboard')" @click="isMobileMenuOpen = false" class="block w-full text-left text-base font-medium text-emerald-600 hover:underline">
+                        Dashboard
+                    </Link>
+                </div>
             </div>
         </header>
 
+        <!-- Hero Section -->
+        <div class="relative">
+            <!-- Mobile Hero -->
+            <div class="md:hidden">
+                <div class="relative h-[90vh] bg-cover bg-center" :style="{ backgroundImage: `url(/images/1.jpg)` }">
+                    <div class="absolute inset-0 bg-black/50"></div>
+                    <div class="absolute inset-0 flex flex-col justify-center items-center text-center text-white p-6">
+                        <h1 class="text-4xl font-bold leading-tight">
+                            <span class="text-emerald-400">MOMOTAS</span>
+                            <span class="block">BIRD</span>
+                        </h1>
+                        <p class="mt-4 text-lg max-w-xs">
+                            Your specialist in birdwatching trips in Madagascar.
+                        </p>
+                        <a href="#contact" class="btn btn-success btn-outline mt-8">
+                            Book Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Desktop Carousel Section -->
+        <div class="hidden md:block pt-24 pb-12">
+            <div class="max-w-screen-xl mx-auto">
+                <div class="carousel relative rounded-2xl shadow-2xl overflow-hidden" ref="carousel" style="height: 65vh; max-height: 600px;">
+                    <div class="list" ref="list">
+                        <div class="item" v-for="(slide, index) in carouselSlides" :key="index">
+                            <div class="bg-image" :style="{ backgroundImage: `url(${slide.src})` }"></div>
+                            <div class="content">
+                                <div class="title">{{ slide.title }}</div>
+                                <div class="name">{{ slide.name }}</div>
+                                <div class="des">{{ slide.des }}</div>
+                                <div class="">
+                                    <a href="#contact" class="btn btn-success btn-outline">Book Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="arrows">
+                        <button class="prev" ref="prevBtn"><</button>
+                        <button class="next" ref="nextBtn">></button>
+                    </div>
+                    <div class="timeRunning" ref="runningTime"></div>
+                </div>
+            </div>
+        </div>
+
         <main>
-            <!-- HERO CAROUSEL SECTION -->
-            <section class="relative h-[600px] md:h-screen text-center overflow-hidden">
-                <!-- Slides -->
-                <div v-for="(slide, index) in slides" :key="index">
-                    <Transition name="fade">
-                        <div v-if="currentSlide === index" class="absolute inset-0">
-                            <img :src="slide.src" alt="Madagascar Landscape" class="w-full h-full object-cover object-center" />
-                            <div class="absolute inset-0 bg-black/60"></div>
-                        </div>
-                    </Transition>
-                </div>
-
-                <!-- Content -->
-                <div class="relative h-full flex flex-col items-center justify-center z-10 px-6">
-                     <Transition name="slide-up" mode="out-in">
-                        <div :key="currentSlide" class="max-w-3xl mx-auto">
-                            <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-4 leading-tight">
-                                {{ slides[currentSlide].title }} in <span :class="`text-${slides[currentSlide].color}-400`">Madagascar</span>
-                            </h1>
-                            <p class="text-lg md:text-xl text-gray-200 mb-8">
-                                {{ slides[currentSlide].subtitle }}
-                            </p>
-                            <a href="#itineraires" class="inline-block bg-emerald-500 text-white px-8 py-3 rounded-full font-bold shadow-lg hover:bg-emerald-600 transition-transform transform hover:scale-105 duration-300">
-                                Explore Tours
-                            </a>
-                        </div>
-                    </Transition>
-                </div>
-
-                <!-- Controls -->
-                <button @click="prevSlide" class="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 text-white p-2 rounded-full hover:bg-white/40 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
-                </button>
-                <button @click="nextSlide" class="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 text-white p-2 rounded-full hover:bg-white/40 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
-                </button>
-            </section>
-
             <!-- ITINERAIRES SECTION -->
-            <section id="itineraires" class="py-20 sm:py-28">
+            <section id="itineraires" class="py-16 md:py-28">
                 <div class="max-w-7xl mx-auto px-6 lg:px-8">
-                    <div class="text-center mb-16 animate-on-scroll">
+                    <div class="text-center mb-12 md:mb-16 animate-on-scroll">
                         <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Our Exceptional Tours</h2>
                         <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto [transition-delay:200ms]">Designed by enthusiasts for an immersive and unforgettable experience.</p>
                     </div>
-                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <!-- Card 1 -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                         <div v-for="c in circuits" :key="c.id" class="animate-on-scroll card-container" style="transition-delay: 0ms;">
-                            <div class="card-inner bg-white rounded-xl shadow-lg overflow-hidden">
-                                <img :src="'/storage/'+c.image" :alt="c.title" class="w-full h-56 object-cover">
+                            <div class="card-inner bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+                                <img :src="'/storage/'+c.image" :alt="c.title" loading="lazy" class="w-full h-56 object-cover">
                                 <div class="p-6">
                                     <h3 class="text-xl font-bold text-gray-900 mb-2">{{ c.title }}</h3>
-                                    <p class="text-gray-600 mb-4 text-sm line-clamp-1">{{ c.description }}</p>
+                                    <p class="text-gray-600 mb-4 text-sm line-clamp-2">{{ c.description }}</p>
                                     <div class="flex justify-between items-center">
                                         <Link :href="route('itineraires.show', c.id)" class="text-sm font-semibold text-emerald-600 group-hover:text-emerald-700 transition-colors">View Tour &rarr;</Link>
                                     </div>
@@ -180,14 +300,97 @@ onMounted(() => {
                 </div>
             </section>
 
-            <div class="flex w-full justify-center">
-                <Link class="btn btn-soft btn-sm btn-success" :href="route('itineraires.index')">All itineraires</Link>
+            <div class="flex w-full justify-center py-8">
+                <Link class="bg-emerald-500 text-white px-6 py-3 rounded-full font-bold shadow-lg hover:bg-emerald-600 transition-transform transform hover:scale-105 duration-300" :href="route('itineraires.index')">All itineraires</Link>
             </div>
 
-            <!-- GALERIE SECTION -->
-            <section id="galerie" class="py-20 sm:py-28 bg-white">
+            <!-- WHY CHOOSE US SECTION -->
+            <section id="why-choose-us" class="py-16 md:py-28 bg-gray-50">
                 <div class="max-w-7xl mx-auto px-6 lg:px-8">
-                    <div class="text-center mb-16 animate-on-scroll">
+                    <div class="text-center mb-12 md:mb-16 animate-on-scroll">
+                        <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Why Choose Momotas Bird?</h2>
+                        <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">Discover the advantages of traveling with true Madagascar experts.</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                        <div class="animate-on-scroll" style="transition-delay: 100ms;">
+                            <div class="p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+                                <div class="text-emerald-500 mb-4">
+                                    <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z"></path></svg>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-900 mb-2">Expert Local Guides</h3>
+                                <p class="text-gray-600">Our guides are passionate, local experts who know the birds, the land, and the culture intimately.</p>
+                            </div>
+                        </div>
+                        <div class="animate-on-scroll" style="transition-delay: 200ms;">
+                            <div class="p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+                                <div class="text-emerald-500 mb-4">
+                                    <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-900 mb-2">Tailor-Made Itineraries</h3>
+                                <p class="text-gray-600">We customize every trip to your specific interests, pace, and target species.</p>
+                            </div>
+                        </div>
+                        <div class="animate-on-scroll" style="transition-delay: 300ms;">
+                            <div class="p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+                                <div class="text-emerald-500 mb-4">
+                                    <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-900 mb-2">Conservation Commitment</h3>
+                                <p class="text-gray-600">We are dedicated to responsible tourism that supports local communities and protects Madagascar's unique biodiversity.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ABOUT US SECTION -->
+            <section id="about" class="py-16 md:py-28 bg-white">
+                <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                        <div class="animate-on-scroll">
+                            <img src="/images/4.jpg" alt="About Momotas Bird" class="rounded-lg shadow-xl w-full h-auto object-cover">
+                        </div>
+                        <div class="animate-on-scroll" style="transition-delay: 200ms;">
+                            <h2 class="text-3xl md:text-4xl font-bold text-gray-900">About Momotas Bird</h2>
+                            <p class="mt-4 text-lg text-gray-600">Momotas Bird was born from a lifelong passion for the incredible avian diversity of Madagascar. Our founder, a native of this beautiful island, spent years exploring its most remote corners, documenting bird life and forging strong relationships with local communities.</p>
+                            <p class="mt-4 text-gray-600">Today, we are a small team of dedicated professionals who share this passion. Our mission is to share the magic of Malagasy nature with the world, while actively contributing to its preservation. We believe that responsible, small-scale tourism is a powerful tool for conservation.</p>
+                            <a href="#contact" class="mt-6 inline-block bg-emerald-500 text-white px-6 py-3 rounded-full font-bold shadow-lg hover:bg-emerald-600 transition-transform transform hover:scale-105 duration-300">Plan Your Adventure</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TESTIMONIALS SECTION -->
+            <section id="testimonials" class="py-16 md:py-28">
+                <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                    <div class="text-center mb-12 md:mb-16 animate-on-scroll">
+                        <h2 class="text-3xl md:text-4xl font-bold text-gray-900">What Our Clients Say</h2>
+                        <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">Real stories from birders who have experienced the Momotas difference.</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="animate-on-scroll bg-white p-8 rounded-xl shadow-lg" style="transition-delay: 100ms;">
+                            <p class="text-gray-600 mb-4">"An absolutely unforgettable trip. The guide's knowledge was encyclopedic, and his ability to spot the most cryptic birds was almost supernatural. We saw everything on our list and more!"</p>
+                            <p class="font-bold text-gray-900">- John D.</p>
+                            <p class="text-sm text-gray-500">USA</p>
+                        </div>
+                        <div class="animate-on-scroll bg-white p-8 rounded-xl shadow-lg" style="transition-delay: 200ms;">
+                            <p class="text-gray-600 mb-4">"From the planning stages to the final farewell, everything was seamless. The accommodation was fantastic, and the logistics were flawless. I can't recommend Momotas Bird highly enough."</p>
+                            <p class="font-bold text-gray-900">- Sarah L.</p>
+                            <p class="text-sm text-gray-500">United Kingdom</p>
+                        </div>
+                        <div class="animate-on-scroll bg-white p-8 rounded-xl shadow-lg" style="transition-delay: 300ms;">
+                            <p class="text-gray-600 mb-4">"As a photographer, I had specific goals. The team at Momotas not only understood my needs but went above and beyond to ensure I got the shots I was dreaming of. A first-class operation."</p>
+                            <p class="font-bold text-gray-900">- Michael P.</p>
+                            <p class="text-sm text-gray-500">Australia</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- GALERIE SECTION -->
+            <section id="galerie" class="py-16 md:py-28 bg-white">
+                <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                    <div class="text-center mb-12 md:mb-16 animate-on-scroll">
                         <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Gallery of Winged Treasures</h2>
                         <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto [transition-delay:200ms]">A glimpse of the avian beauty you might encounter.</p>
                     </div>
@@ -203,13 +406,17 @@ onMounted(() => {
             </section>
 
             <!-- CONTACT SECTION -->
-            <section id="contact" class="py-20 sm:py-28">
-                <div class="max-w-4xl mx-auto animate-on-scroll">
+            <section id="contact" class="py-16 md:py-28">
+                <div class="max-w-4xl mx-auto px-6 lg:px-8 animate-on-scroll">
                     <h2 class="text-3xl md:text-4xl font-bold text-gray-900 text-center">Ready for Adventure?</h2>
                     <p class="mt-4 text-lg text-gray-600 [transition-delay:200ms] text-center">Contact us to create your custom trip to discover the birds of Madagascar.</p>
                     <div v-if="$page.props.flash && $page.props.flash.success" class="mt-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
                         <strong class="font-bold">Success!</strong>
                         <span class="block sm:inline">{{ $page.props.flash.success }}</span>
+                    </div>
+                    <div v-if="messageSent" class="mt-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                        <strong class="font-bold">Success!</strong>
+                        <span class="block sm:inline">Your message has been sent successfully!</span>
                     </div>
                     <form @submit.prevent="submit" class="mt-8 max-w-xl mx-auto">
                         <div class="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
@@ -233,14 +440,14 @@ onMounted(() => {
                             </div>
                         </div>
                         <div class="mt-6 sm:col-span-2 text-center">
-                            <button type="submit" class="inline-block bg-emerald-500 text-white px-8 py-3 rounded-full font-bold shadow-lg hover:bg-emerald-600 transition-transform transform hover:scale-105 duration-300">
-                                Send Message
+                            <button :disabled="form.processing" type="submit" class="inline-block bg-emerald-500 text-white px-8 py-3 rounded-full font-bold shadow-lg hover:bg-emerald-600 transition-transform transform hover:scale-105 duration-300 disabled:opacity-50">
+                                <span v-if="form.processing">Sending...</span>
+                                <span v-else>Send Message</span>
                             </button>
                         </div>
                     </form>
                 </div>
             </section>
-
         </main>
 
         <!-- FOOTER -->
@@ -253,6 +460,65 @@ onMounted(() => {
     </div>
 </template>
 
+<style scoped>
+@import './slider.css';
+
+.list .item .content{
+    position: absolute;
+    top: 50%;
+    left: 100px;
+    transform: translateY(-50%);
+    width: 550px;
+    text-align: left;
+    color: #fff;
+    display: none;
+}
+
+.content .title,
+.content .name,
+.content .des,
+.content .btn {
+    opacity: 0;
+    animation: animate 1s ease-in-out 1 forwards;
+}
+
+.content .name { animation-delay: 0.3s; }
+.content .des { animation-delay: 0.6s; }
+.content .btn { animation-delay: 0.9s; }
+
+.title {
+    font-size: 50px;
+    text-transform: uppercase;
+    color: #fff;
+    font-weight: bold;
+    line-height: 1;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.name {
+    font-size: 50px;
+    text-transform: uppercase;
+    font-weight: bold;
+    line-height: 1;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.des {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    margin-left: 5px;
+    color: #eee;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+
+.btn {
+    margin-left: 5px;
+}
+
+</style>
+
 <style>
 .animate-on-scroll {
     opacity: 0;
@@ -263,29 +529,6 @@ onMounted(() => {
 .animate-on-scroll.is-visible {
     opacity: 1;
     transform: translateY(0);
-}
-
-/* Carousel Transitions */
-.fade-enter-active,
-.fade-leave-active {
-    transition: opacity 1.5s ease;
-}
-.fade-enter-from,
-.fade-leave-to {
-    opacity: 0;
-}
-
-.slide-up-enter-active,
-.slide-up-leave-active {
-    transition: all 0.5s ease-out;
-}
-.slide-up-enter-from {
-    opacity: 0;
-    transform: translateY(20px);
-}
-.slide-up-leave-to {
-    opacity: 0;
-    transform: translateY(-20px);
 }
 
 /* 3D Card Effect */
@@ -300,10 +543,4 @@ onMounted(() => {
     transform: translateY(-10px) rotateY(15deg);
     box-shadow: 0 25px 50px -12px rgba(34, 197, 94, 0.25);
 }
-
-
-/* Tailwind CSS JIT classes - these are here to ensure they are generated */
-.text-emerald-400 {}
-.text-sky-400 {}
-.text-amber-400 {}
 </style>
