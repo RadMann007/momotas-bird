@@ -72,7 +72,7 @@ const modules = [Navigation, Pagination, Autoplay];
                 <p class="text-lg italic text-yellow-300 mt-2">{{ it.duration }}</p>
                 <p class="mt-4 text-sm leading-relaxed">{{ it.description }}</p>
                 <Link :href="`/itineraires/${it.id}`" class="mt-4 inline-flex items-center gap-2 text-white bg-emerald-600 hover:bg-emerald-700 font-bold py-2 px-5 rounded-full transition-colors">
-                  Voir plus
+                  More
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                   </svg>

@@ -374,7 +374,7 @@ onMounted(() => {
 </template>
 
 <style scoped>
-@import './slider.css';
+/* @import './slider.css'; */
 
 .list .item .content{
     position: absolute;

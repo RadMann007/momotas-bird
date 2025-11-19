@@ -76,7 +76,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-    <Head title="Create New Circuit" />
+    <Head title="Edit Circuit" />
     <AuthenticatedLayout>
         <div class="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8">
             <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg">

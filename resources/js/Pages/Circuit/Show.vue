@@ -32,7 +32,7 @@ const deleteImage = (id) => {
 </script>
 
 <template>
-  <Head :title="`Circuit - ${props.circuit.title}`" />
+  <Head :title="`Show - ${props.circuit.title}`" />
   <AuthenticatedLayout>
     <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
 

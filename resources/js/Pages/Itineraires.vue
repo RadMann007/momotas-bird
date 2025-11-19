@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
+// import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import type { CircuitInterface } from '@/interfaces/custom';
 import { Link } from '@inertiajs/vue3';
 
@@ -41,7 +41,7 @@ const modules = [Navigation, Pagination, Autoplay];
   <header class="fixed top-0 w-full bg-white/80 backdrop-blur-lg shadow-sm z-50">
     <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
       <Link href="/" class="text-2xl font-bold text-emerald-600 tracking-tight flex items-center gap-2">
-        <span class="text-3xl">🦜</span>
+        <img src="/images/logo.png" class="size-16"/>
         <span>Momotas Bird</span>
       </Link>
       <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
@@ -51,10 +51,10 @@ const modules = [Navigation, Pagination, Autoplay];
       </nav>
       <div class="hidden md:flex items-center gap-4">
         <template v-if="!$page.props.auth.user">
-          <Link v-if="canLogin" :href="route('login')" class="text-sm font-medium text-gray-600 hover:text-emerald-600">Log in</Link>
+          <!-- <Link v-if="canLogin" :href="route('login')" class="text-sm font-medium text-gray-600 hover:text-emerald-600">Log in</Link>
           <Link v-if="canRegister" :href="route('register')" class="ml-4 text-sm font-bold bg-emerald-500 text-white px-4 py-2 rounded-full hover:bg-emerald-600 transition-transform transform hover:scale-105">
             Register
-          </Link>
+          </Link> -->
         </template>
         <Link v-else :href="route('dashboard')" class="text-sm font-medium text-emerald-600 hover:underline">
           Dashboard
@@ -81,7 +81,7 @@ const modules = [Navigation, Pagination, Autoplay];
             <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-5 md:p-8">
               <div class="text-white max-w-xl">
                 <h2 class="text-lg md:text-2xl font-bold">{{ it.title }}</h2>
-                <p class="text-sm italic text-yellow-300 mt-1">{{ it.duration }}</p>
+                <p class="text-sm italic text-yellow-300 mt-1">{{ it.duration }} Days</p>
                 <p class="hidden md:block mt-2 text-sm leading-relaxed">{{ it.description }}</p>
               </div>
             </div>
@@ -101,7 +101,7 @@ const modules = [Navigation, Pagination, Autoplay];
               <img :src="`/storage/${it.image}`" alt="" class="w-full h-full object-cover" />
             </div>
             <h3 class="font-semibold text-lg">{{ it.title }}</h3>
-            <p class="text-sm italic text-yellow-500 mt-1">{{ it.duration }}</p>
+            <p class="text-sm italic text-yellow-500 mt-1">{{ it.duration }} Days</p>
             <p class="text-sm text-gray-600 mt-2 line-clamp-1">{{ it.description }}</p>
           </article>
         </Link>

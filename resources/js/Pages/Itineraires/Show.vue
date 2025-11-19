@@ -7,8 +7,9 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/autoplay';
+import 'swiper/css/effect-fade';
 
-import { Navigation, Pagination, Autoplay, EffectCoverflow } from 'swiper/modules';
+import { Navigation, Pagination, Autoplay, EffectCoverflow, EffectFade } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 
 const props = defineProps({
@@ -27,6 +28,22 @@ const prices = ref([
 const activePriceIndex = ref(0);
 let priceInterval;
 
+const isDescriptionExpanded = ref(false);
+const expandedDayDescriptions = ref({});
+const expandedHotelDescriptions = ref({});
+
+const toggleDescription = () => {
+    isDescriptionExpanded.value = !isDescriptionExpanded.value;
+};
+
+const toggleDayDescription = (index) => {
+    expandedDayDescriptions.value[index] = !expandedDayDescriptions.value[index];
+};
+
+const toggleHotelDescription = (index) => {
+    expandedHotelDescriptions.value[index] = !expandedHotelDescriptions.value[index];
+};
+
 onMounted(() => {
     priceInterval = setInterval(() => {
         activePriceIndex.value = (activePriceIndex.value + 1) % prices.value.length;
@@ -38,14 +55,15 @@ onUnmounted(() => {
 });
 
 const modules = [Navigation, Pagination, Autoplay, EffectCoverflow];
-const modules2 = [Autoplay];
+const modules2 = [Autoplay, EffectFade];
 </script>
 
 <template>
     <Head :title="`Itinéraire - ${props.circuit.title}`" />
     <UserLayout no-padding>
-        <div class="relative w-full h-[75vh] bg-gray-800">
+        <div class=" mx-auto relative w-[80%] h-[85vh] bg-gray-800">
            <swiper
+                :effect="'fade'"
                 :slidesPerView="1"
                 :centeredSlides="true"
                 :spaceBetween="30"
@@ -63,19 +81,22 @@ const modules2 = [Autoplay];
                 </swiper-slide>
             </swiper>
             <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
-            <div class="absolute inset-0 z-10 flex flex-col items-start justify-end p-8 text-left text-white md:p-12 lg:p-16">
-                <h1 class="text-4xl font-extrabold tracking-tight sm:text-6xl md:text-7xl drop-shadow-lg">{{ circuit.title }}</h1>
-                <p class="mt-4 max-w-3xl text-lg sm:text-xl drop-shadow-lg">{{ circuit.description }}</p>
-                <p class="mt-6 text-2xl font-bold text-gray-200 drop-shadow-lg">{{ circuit.duration }}</p>
-                <div class="mt-6 text-2xl font-bold text-gray-200 drop-shadow-lg">
-                    <div class="relative h-20 w-80 text-left">
+            <div class="absolute inset-0 z-10 flex flex-col items-start justify-end p-6 text-left text-white sm:p-8 md:p-12">
+                <h1 class="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl drop-shadow-lg">{{ circuit.title }}</h1>
+                <p :class="['mt-3', 'max-w-2xl', 'text-base', 'sm:text-lg', 'drop-shadow-lg', !isDescriptionExpanded ? 'line-clamp-2 sm:line-clamp-3' : '']">{{ circuit.description }}</p>
+                <button @click="toggleDescription" class="text-sm font-semibold text-white hover:text-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                    {{ isDescriptionExpanded ? 'Show less' : 'Show more' }}
+                </button>
+                <p class="mt-4 text-xl font-bold text-gray-200 sm:text-2xl drop-shadow-lg">{{ circuit.duration }} days</p>
+                <div class="mt-4 text-xl font-bold text-gray-200 sm:text-2xl drop-shadow-lg">
+                    <!-- <div class="relative h-20 w-80 text-left">
                         <transition name="slide-fade" mode="out-in">
                             <div :key="activePriceIndex" class="absolute w-full">
-                                <p>À partir de {{ prices[activePriceIndex].value }} €</p>
-                                <p class="text-sm">/ personne ({{ prices[activePriceIndex].label }})</p>
+                                <p>{{ prices[activePriceIndex].value }} € / pers ({{ prices[activePriceIndex].label }})</p>
+                                <p class="text-sm"></p>
                             </div>
                         </transition>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div class="absolute bottom-8 left-1/2 -translate-x-1/2">
@@ -87,14 +108,16 @@ const modules2 = [Autoplay];
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-20">Daily Program</h2>
                 
-                <div class="daily-program-carousel relative">
+                <div class="relative">
+                <!-- <div class="daily-program-carousel relative"> -->
+                    <!-- :autoplay="{ delay: 4500, disableOnInteraction: false }" -->
                     <swiper
                         :modules="modules"
                         effect="coverflow"
                         :centeredSlides="true"
                         :slides-per-view="1.2"
                         :space-between="20"
-                        :loop="false" :autoplay="{ delay: 2500, disableOnInteraction: false }"
+                        :loop="false" 
                         :coverflowEffect="{
                         rotate: 50,
                         stretch: 0,
@@ -130,11 +153,21 @@ const modules2 = [Autoplay];
                                         <p class="font-semibold text-gray-700">{{ day.start }} → {{ day.end }}</p>
                                     </div>
                                     <div class="mt-6 text-gray-600 text-sm space-y-4">
-                                        <p class="leading-relaxed line-clamp-3">{{ day.description }}</p>
+                                        <div>
+                                            <p :class="['leading-relaxed', { 'line-clamp-3': !expandedDayDescriptions[index] }]">{{ day.description }}</p>
+                                            <button @click="toggleDayDescription(index)" class="text-sm font-semibold text-emerald-600 hover:text-emerald-700">
+                                                {{ expandedDayDescriptions[index] ? 'Show less' : 'Show more' }}
+                                            </button>
+                                        </div>
                                         <div v-if="day.hotel_name" class="border-t border-gray-200 pt-4 mt-4">
                                             <h4 class="text-base font-semibold text-gray-800">Accommodation</h4>
                                             <p class="mt-2 font-semibold text-gray-700">{{ day.hotel_name }}</p>
-                                            <p v-if="day.hotel_description" class="mt-1 italic text-gray-500 line-clamp-1">{{ day.hotel_description }}</p>
+                                            <div v-if="day.hotel_description">
+                                                <p :class="['mt-1', 'italic', 'text-gray-500', { 'line-clamp-2': !expandedHotelDescriptions[index] }]">{{ day.hotel_description }}</p>
+                                                <button @click="toggleHotelDescription(index)" class="text-sm font-semibold text-emerald-600 hover:text-emerald-700">
+                                                    {{ expandedHotelDescriptions[index] ? 'Show less' : 'Show more' }}
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

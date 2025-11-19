@@ -60,7 +60,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-    <Head title="Create New Day" />
+    <Head title="Edit Day" />
 
     <AuthenticatedLayout>
         <div class="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8">
